@@ -16,8 +16,6 @@ public class DrawLine2D : MonoBehaviour
 	protected List<Vector2> m_Points;
 	List<Vector2> colliderPoints;
 
-	float cooldownTime = 0.1f;
-
 	public virtual LineRenderer lineRenderer
 	{
 		get
@@ -67,6 +65,8 @@ public class DrawLine2D : MonoBehaviour
 		}
 		m_Points = new List<Vector2> ();
 		colliderPoints = new List<Vector2>();
+
+        m_EdgeCollider2D.enabled = false;
 	}
 
 	protected virtual void Update ()
@@ -75,6 +75,7 @@ public class DrawLine2D : MonoBehaviour
 		{
 			Reset ();
 		}
+
 		if ( Input.GetMouseButton ( 0 ) )
 		{
 			Vector2 mousePosition = m_Camera.ScreenToWorldPoint ( Input.mousePosition );
@@ -95,10 +96,8 @@ public class DrawLine2D : MonoBehaviour
 			}
 		}
 
-		if(cooldownTime <= 0f)
-			cooldownTime = 0.1f;
-		else
-			cooldownTime -= Time.deltaTime;
+        if (m_Points.Count > 2)
+            m_EdgeCollider2D.enabled = true;
 	}
 
 	protected virtual void Reset ()
