@@ -1,0 +1,11 @@
+=-=-=-=-=-==-=-=-=-=-= TODO =-=-=-=-=-==-=-=-=-=-= 
+-Make sure the line you are drawing cant pass over the walls or other obstacle
+-
+-
+
+
+
+=-=-=-=-=-==-=-=-=-=-= DONE =-=-=-=-=-==-=-=-=-=-=
++
++
++
