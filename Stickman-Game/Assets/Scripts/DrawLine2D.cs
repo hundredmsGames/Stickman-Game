@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DrawLine2D : MonoBehaviour
 {
-
 	[SerializeField]
 	protected LineRenderer m_LineRenderer;
 	[SerializeField]
@@ -16,7 +15,11 @@ public class DrawLine2D : MonoBehaviour
 	protected List<Vector2> m_Points;
 	List<Vector2> colliderPoints;
 
-    private float lineLenLimit = 10f;
+    public Color lineColor;
+    public float lineWidth;
+    public float edgeRadius;
+
+    public  float lineLenLimit = 10f;
     private float lineLength = 0f;
 
 	public virtual LineRenderer lineRenderer
@@ -84,7 +87,7 @@ public class DrawLine2D : MonoBehaviour
             Vector2 mousePosition = m_Camera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 lineRendererPosition = m_LineRenderer.transform.position;
             Vector2 colliderPos = mousePosition - lineRendererPosition;
-
+  
             if (!m_Points.Contains(mousePosition))
             {
                 m_Points.Add(mousePosition);
@@ -109,8 +112,6 @@ public class DrawLine2D : MonoBehaviour
         {
             m_EdgeCollider2D.enabled = true;
         }
-
-        Debug.Log(lineLength);
     }
 
 	protected virtual void Reset ()
@@ -141,17 +142,17 @@ public class DrawLine2D : MonoBehaviour
 		m_LineRenderer = gameObject.AddComponent<LineRenderer> ();
 		m_LineRenderer.positionCount = 0;
 		m_LineRenderer.material = new Material ( Shader.Find ( "Particles/Additive" ) );
-		m_LineRenderer.startColor = Color.white;
-		m_LineRenderer.endColor = Color.white;
-		m_LineRenderer.startWidth = 0.2f;
-		m_LineRenderer.endWidth = 0.2f;
+		m_LineRenderer.startColor = lineColor;
+		m_LineRenderer.endColor = lineColor;
+		m_LineRenderer.startWidth = lineWidth;
+		m_LineRenderer.endWidth = lineWidth;
 		m_LineRenderer.useWorldSpace = true;
 	}
 
 	protected virtual void CreateDefaultEdgeCollider2D ()
 	{
 		m_EdgeCollider2D = gameObject.AddComponent<EdgeCollider2D> ();
-		m_EdgeCollider2D.edgeRadius = 0.1f;
+        m_EdgeCollider2D.edgeRadius = edgeRadius;
 	}
 
 }
