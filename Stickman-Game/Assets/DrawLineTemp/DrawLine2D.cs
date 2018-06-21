@@ -16,6 +16,9 @@ public class DrawLine2D : MonoBehaviour
 	protected List<Vector2> m_Points;
 	List<Vector2> colliderPoints;
 
+    private float lineLenLimit = 10f;
+    private float lineLength = 0f;
+
 	public virtual LineRenderer lineRenderer
 	{
 		get
@@ -69,36 +72,46 @@ public class DrawLine2D : MonoBehaviour
         m_EdgeCollider2D.enabled = false;
 	}
 
-	protected virtual void Update ()
-	{
-		if ( Input.GetMouseButtonDown ( 0 ) )
-		{
-			Reset ();
-		}
+    protected virtual void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Reset();
+        }
 
-		if ( Input.GetMouseButton ( 0 ) )
-		{
-			Vector2 mousePosition = m_Camera.ScreenToWorldPoint ( Input.mousePosition );
-			Vector2 lineRendererPosition = m_LineRenderer.transform.position;
-			Vector2 colliderPos = mousePosition - lineRendererPosition;
+        if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
+        {
+            Vector2 mousePosition = m_Camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 lineRendererPosition = m_LineRenderer.transform.position;
+            Vector2 colliderPos = mousePosition - lineRendererPosition;
 
-			if ( !m_Points.Contains ( mousePosition ) )
-			{
-				m_Points.Add ( mousePosition );
-				m_LineRenderer.positionCount = m_Points.Count;
-				m_LineRenderer.SetPosition ( m_LineRenderer.positionCount - 1, mousePosition);
+            if (!m_Points.Contains(mousePosition))
+            {
+                m_Points.Add(mousePosition);
+                m_LineRenderer.positionCount = m_Points.Count;
+                m_LineRenderer.SetPosition(m_LineRenderer.positionCount - 1, mousePosition);
 
-				colliderPoints.Add(colliderPos);
-				if ( m_EdgeCollider2D != null && m_AddCollider && m_Points.Count > 1 )
-				{
-					m_EdgeCollider2D.points = colliderPoints.ToArray ();
-				}
-			}
-		}
+                colliderPoints.Add(colliderPos);
+                if (m_EdgeCollider2D != null && m_AddCollider && m_Points.Count > 1)
+                {
+                    m_EdgeCollider2D.points = colliderPoints.ToArray();
+                }
+
+                // Here, we measure line length
+                if (m_Points.Count > 1)
+                {
+                    lineLength += Vector2.Distance(m_Points[m_Points.Count - 2], mousePosition);
+                }
+            }
+        }
 
         if (m_Points.Count > 2)
+        {
             m_EdgeCollider2D.enabled = true;
-	}
+        }
+
+        Debug.Log(lineLength);
+    }
 
 	protected virtual void Reset ()
 	{
@@ -118,6 +131,9 @@ public class DrawLine2D : MonoBehaviour
 
 		if(colliderPoints != null)
 			colliderPoints.Clear();
+
+        // Set line length to 0
+        lineLength = 0f;
 	}
 
 	protected virtual void CreateDefaultLineRenderer ()
