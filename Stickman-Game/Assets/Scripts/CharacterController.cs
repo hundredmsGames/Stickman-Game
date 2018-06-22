@@ -31,7 +31,7 @@ public class CharacterController : MonoBehaviour
                 rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX |
                                 RigidbodyConstraints2D.FreezeRotation;
 
-                rigidbody.velocity = new Vector2(0f, 0f);
+               
             }
             else
             {
