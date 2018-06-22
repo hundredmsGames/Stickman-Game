@@ -16,13 +16,12 @@ public class DrawLine2D : MonoBehaviour
     List<Vector2> colliderPoints;
 
     public Color lineColor;
+    public Color ghostLineColor;
     public float lineWidth;
     public float edgeRadius;
 
     public float lineLenLimit = 10f;
     private float lineLength = 0f;
-
-    private bool cancelDrawing = false;
 
     public virtual LineRenderer lineRenderer
     {
@@ -85,39 +84,63 @@ public class DrawLine2D : MonoBehaviour
             Reset();
         }
 
-        if (Input.GetMouseButton(0) && cancelDrawing == false && lineLength <= lineLenLimit)
+        if(Input.GetMouseButtonUp(0))
+        {
+            m_LineRenderer.startColor = lineColor;
+            m_LineRenderer.endColor = lineColor;
+
+            m_EdgeCollider2D.enabled = true;
+        }
+
+        if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
         {
             Vector2 mousePosition = m_Camera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 lineRendererPosition = m_LineRenderer.transform.position;
             Vector2 colliderPos = mousePosition - lineRendererPosition;
 
+            if (m_Points.Count > 0)
+            {
+                if (IsThereObstacle(m_Points[m_Points.Count - 1], mousePosition) == true)
+                    return;
+            }
+
             if (!m_Points.Contains(mousePosition))
             {
+                if (m_Points.Count > 0)
+                {
+                    // Here, we measure line length
+                    lineLength += Vector2.Distance(m_Points[m_Points.Count - 1], mousePosition);
+                }
+
                 m_Points.Add(mousePosition);
                 m_LineRenderer.positionCount = m_Points.Count;
                 m_LineRenderer.SetPosition(m_LineRenderer.positionCount - 1, mousePosition);
-
                 colliderPoints.Add(colliderPos);
+
                 if (m_EdgeCollider2D != null && m_AddCollider && m_Points.Count > 1)
                 {
                     m_EdgeCollider2D.points = colliderPoints.ToArray();
-                }
-
-                // Here, we measure line length
-                if (m_Points.Count > 1)
-                {
-                    lineLength += Vector2.Distance(m_Points[m_Points.Count - 2], mousePosition);
-                }
+                } 
             }
-          
-            if (Physics2D.OverlapCircleAll(mousePosition, 1f).Length > 1)
-                cancelDrawing = true;
         }
+    }
 
-        if (m_Points.Count > 2)
+    private bool IsThereObstacle(Vector2 a, Vector2 b)
+    {
+        //Get the mouse position on the screen and send a raycast into the game world from that position.
+        RaycastHit2D[] hits = Physics2D.LinecastAll(a, b);
+        Debug.DrawLine(a, b, Color.red);
+
+        foreach(RaycastHit2D hit in hits)
         {
-            m_EdgeCollider2D.enabled = true;
-        }
+            //If something was hit, the RaycastHit2D.collider will not be null.
+            if (hit.collider.name != "DrawLine")
+            {
+                return true;
+            }
+        }    
+
+        return false;
     }
 
     protected virtual void Reset()
@@ -142,8 +165,10 @@ public class DrawLine2D : MonoBehaviour
         // Set line length to 0
         lineLength = 0f;
 
-        //let the drawing system works again
-        cancelDrawing = false;
+        m_LineRenderer.startColor = ghostLineColor;
+        m_LineRenderer.endColor = ghostLineColor;
+
+        m_EdgeCollider2D.enabled = false;
     }
 
     protected virtual void CreateDefaultLineRenderer()
@@ -151,8 +176,8 @@ public class DrawLine2D : MonoBehaviour
         m_LineRenderer = gameObject.AddComponent<LineRenderer>();
         m_LineRenderer.positionCount = 0;
         m_LineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-        m_LineRenderer.startColor = lineColor;
-        m_LineRenderer.endColor = lineColor;
+        m_LineRenderer.startColor = ghostLineColor;
+        m_LineRenderer.endColor = ghostLineColor;
         m_LineRenderer.startWidth = lineWidth;
         m_LineRenderer.endWidth = lineWidth;
         m_LineRenderer.useWorldSpace = true;
