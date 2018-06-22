@@ -685,6 +685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
+  drawLine: {fileID: 205202229}
 --- !u!95 &2043078048
 Animator:
   serializedVersion: 3

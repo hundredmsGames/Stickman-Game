@@ -74,7 +74,7 @@ public class DrawLine2D : MonoBehaviour
         m_Points = new List<Vector2>();
         colliderPoints = new List<Vector2>();
 
-        m_EdgeCollider2D.enabled = false;
+        m_EdgeCollider2D.isTrigger = true;
     }
 
     protected virtual void Update()
@@ -82,14 +82,6 @@ public class DrawLine2D : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Reset();
-        }
-
-        if(Input.GetMouseButtonUp(0))
-        {
-            m_LineRenderer.startColor = lineColor;
-            m_LineRenderer.endColor = lineColor;
-
-            m_EdgeCollider2D.enabled = true;
         }
 
         if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
@@ -123,6 +115,14 @@ public class DrawLine2D : MonoBehaviour
                 } 
             }
         }
+    }
+
+    public void MouseUp()
+    {
+        m_LineRenderer.startColor = lineColor;
+        m_LineRenderer.endColor = lineColor;
+
+        m_EdgeCollider2D.isTrigger = false;
     }
 
     private bool IsThereObstacle(Vector2 a, Vector2 b)
@@ -168,7 +168,7 @@ public class DrawLine2D : MonoBehaviour
         m_LineRenderer.startColor = ghostLineColor;
         m_LineRenderer.endColor = ghostLineColor;
 
-        m_EdgeCollider2D.enabled = false;
+        m_EdgeCollider2D.isTrigger = true;
     }
 
     protected virtual void CreateDefaultLineRenderer()

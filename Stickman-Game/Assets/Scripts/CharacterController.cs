@@ -8,7 +8,9 @@ public class CharacterController : MonoBehaviour
 
     private Rigidbody2D rigidbody;
 
-    bool mouseUp;
+    public DrawLine2D drawLine;
+
+    bool triggered;
 
 	// Use this for initialization
 	void Start ()
@@ -23,19 +25,23 @@ public class CharacterController : MonoBehaviour
         rigidbody.velocity = new Vector2(speed, rigidbody.velocity.y);
 
         if (Input.GetMouseButtonUp(0))
-            mouseUp = true;
-        
+        {
+            if (triggered == true)
+            {
+                rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX |
+                                RigidbodyConstraints2D.FreezeRotation;
+
+                rigidbody.velocity = new Vector2(0f, 0f);
+            }
+            else
+            {
+                drawLine.MouseUp();
+            }
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("hi");
-        //if (mouseUp)
-        //{
-            rigidbody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX |
-                        RigidbodyConstraints2D.FreezeRotation;
-
-            mouseUp = false;
-        //}
+        triggered = true;
     }
 }
