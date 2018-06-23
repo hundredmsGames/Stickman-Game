@@ -189,7 +189,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 27556713}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -14.63, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 32284953}
   m_Layer: 0
   m_Name: Wall_2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 105598498}
   m_Layer: 0
   m_Name: Ground_3
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 166815194}
   m_Layer: 0
   m_Name: Ground_5
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -536,15 +536,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1758549153ae8a40a15a36ed80c57b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LineRenderer: {fileID: 0}
-  m_AddCollider: 1
-  m_EdgeCollider2D: {fileID: 0}
-  m_Camera: {fileID: 0}
+  lineRenderer: {fileID: 0}
+  cam: {fileID: 0}
+  addCollider: 1
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   ghostLineColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
   lineWidth: 0.2
   edgeRadius: 0
-  lineLenLimit: 10
+  lineLenLimit: 30
 --- !u!4 &205202230
 Transform:
   m_ObjectHideFlags: 0
@@ -570,7 +569,7 @@ GameObject:
   - component: {fileID: 216792422}
   m_Layer: 0
   m_Name: Ground_5
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -670,7 +669,7 @@ GameObject:
   - component: {fileID: 224628641}
   m_Layer: 0
   m_Name: Ground_2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -770,7 +769,7 @@ GameObject:
   - component: {fileID: 264172624}
   m_Layer: 0
   m_Name: Ground_1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -872,7 +871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &377789308
 Transform:
   m_ObjectHideFlags: 0
@@ -905,7 +904,7 @@ GameObject:
   - component: {fileID: 425127390}
   m_Layer: 0
   m_Name: Wall_1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1005,7 +1004,7 @@ GameObject:
   - component: {fileID: 667150247}
   m_Layer: 0
   m_Name: Ground_1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1102,7 +1101,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4769973587612502, guid: 8cccd8b027150244e8574f236593a774, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -19.94
+      value: -22.31
       objectReference: {fileID: 0}
     - target: {fileID: 4769973587612502, guid: 8cccd8b027150244e8574f236593a774, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1132,27 +1131,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114613373933055236, guid: 8cccd8b027150244e8574f236593a774,
-        type: 2}
-      propertyPath: drawLine
-      value: 
-      objectReference: {fileID: 205202229}
-    - target: {fileID: 137482937085174452, guid: 8cccd8b027150244e8574f236593a774,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 137982541641694526, guid: 8cccd8b027150244e8574f236593a774,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 137627459971532714, guid: 8cccd8b027150244e8574f236593a774,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 137611940697445172, guid: 8cccd8b027150244e8574f236593a774,
+    - target: {fileID: 137515106629594884, guid: 8cccd8b027150244e8574f236593a774,
         type: 2}
       propertyPath: m_Mesh
       value: 
@@ -1162,11 +1141,31 @@ Prefab:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 137515106629594884, guid: 8cccd8b027150244e8574f236593a774,
+    - target: {fileID: 137611940697445172, guid: 8cccd8b027150244e8574f236593a774,
         type: 2}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 137627459971532714, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 137982541641694526, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 137482937085174452, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114613373933055236, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: drawLine
+      value: 
+      objectReference: {fileID: 205202229}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8cccd8b027150244e8574f236593a774, type: 2}
   m_IsPrefabParent: 0
@@ -1184,7 +1183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &776608613
 Transform:
   m_ObjectHideFlags: 0
@@ -1217,7 +1216,7 @@ GameObject:
   - component: {fileID: 825705110}
   m_Layer: 0
   m_Name: Wall_1
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1317,7 +1316,7 @@ GameObject:
   - component: {fileID: 1049030851}
   m_Layer: 0
   m_Name: Ground_4
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1417,7 +1416,7 @@ GameObject:
   - component: {fileID: 1148631634}
   m_Layer: 0
   m_Name: Wall_2
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1517,7 +1516,7 @@ GameObject:
   - component: {fileID: 1518737953}
   m_Layer: 0
   m_Name: Ground_3
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1652,7 +1651,7 @@ GameObject:
   - component: {fileID: 1947215008}
   m_Layer: 0
   m_Name: Ground_2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1752,7 +1751,7 @@ GameObject:
   - component: {fileID: 2006900411}
   m_Layer: 0
   m_Name: Ground_4
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
