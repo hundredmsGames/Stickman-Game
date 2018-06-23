@@ -47,28 +47,35 @@ public class CharacterController : MonoBehaviour
                 drawLine.MouseUp();
             }
         }
-        RaycastHit2D raycastHit2D = Physics2D.Raycast(topAngledRayPoint.transform.position, Vector2.up,10);
+        //for debug
+        Debug.DrawLine(topAngledRayPoint.transform.position, Rotate(topAngledRayPoint, 90, rayLenght), Color.red);
+        Debug.DrawLine(topAngledRayPoint.transform.position, Rotate(topAngledRayPoint, -45f, rayLenght), Color.blue);
+        Debug.DrawLine(horizontalTop.transform.position, Rotate(horizontalTop, 0, rayLenght), Color.green);
+        Debug.DrawLine(horizontalMiddle.transform.position, Rotate(horizontalMiddle, 0, rayLenght), Color.white);
+        Debug.DrawLine(horizontalBottom.transform.position, Rotate(horizontalBottom, 0, rayLenght), Color.yellow);
+
+
+        RaycastHit2D raycastHit2D = Physics2D.Linecast(topAngledRayPoint.transform.position, Vector2.up);
+        if (/*charachter is crouching or crawling and*/ raycastHit2D.collider != null)
+        {
+
+        }
+        raycastHit2D = Physics2D.Linecast(topAngledRayPoint.transform.position, Rotate(topAngledRayPoint, 45f, rayLenght));
+
+         raycastHit2D = Physics2D.Raycast(topAngledRayPoint.transform.position, Vector2.up,10);
         if(/*charachter is crouching or crawling and*/ raycastHit2D.collider!=null)
         {
 
         }
-
-       // Debug.DrawRay(topAngledRayPoint.transform.position, angledVector);
-       // Debug.DrawRay(topAngledRayPoint.transform.position, Rotate(topAngledRayPoint,-45f, rayLenght),Color.red);
-        Debug.DrawLine(topAngledRayPoint.transform.position, Rotate(topAngledRayPoint, 45f, rayLenght), Color.blue);
-        
         raycastHit2D = Physics2D.Raycast(topAngledRayPoint.transform.position,angledVector , 10);
 
     }
-    /*
-     [cos@  sin@][x]
-     [-sin@ cos@][y]
-         */
+
     private Vector2 Rotate(GameObject go,float angle,float length)
     {
         Vector2 v = new Vector2(length, 0);
-       float newX = v.x * Mathf.Cos(angle * Mathf.Deg2Rad) + v.y * Mathf.Sin(angle * Mathf.Deg2Rad);
-       float newY = v.x * -Mathf.Sin(angle * Mathf.Deg2Rad) + v.y * Mathf.Cos(angle * Mathf.Deg2Rad);
+       float newX = v.x * Mathf.Cos(angle * Mathf.Deg2Rad) + v.y * -Mathf.Sin(angle * Mathf.Deg2Rad);
+       float newY = v.x * Mathf.Sin(angle * Mathf.Deg2Rad) + v.y * Mathf.Cos(angle * Mathf.Deg2Rad);
 
         newX += go.transform.position.x;
         newY += go.transform.position.y;
