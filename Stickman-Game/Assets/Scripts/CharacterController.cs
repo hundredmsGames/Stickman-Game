@@ -27,7 +27,6 @@ public class CharacterController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
 
         if (Input.GetMouseButtonUp(0))
         {
@@ -41,6 +40,12 @@ public class CharacterController : MonoBehaviour
                 drawLine.MouseUp();
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
+
     }
 
     private void OnTriggerStay2D(Collider2D collision)
