@@ -74,7 +74,7 @@ public class DrawLine2D : MonoBehaviour
         m_Points = new List<Vector2>();
         colliderPoints = new List<Vector2>();
 
-        m_EdgeCollider2D.isTrigger = true;
+        m_EdgeCollider2D.enabled = false;
     }
 
     protected virtual void Update()
@@ -117,24 +117,21 @@ public class DrawLine2D : MonoBehaviour
         }
     }
 
-    public void MouseUp()
+    public void MouseUp(bool enableCollider)
     {
         m_LineRenderer.startColor = lineColor;
         m_LineRenderer.endColor = lineColor;
 
-        m_EdgeCollider2D.isTrigger = false;
+        m_EdgeCollider2D.enabled = enableCollider;
     }
 
     private bool IsThereObstacle(Vector2 a, Vector2 b)
     {
-        //Get the mouse position on the screen and send a raycast into the game world from that position.
         RaycastHit2D[] hits = Physics2D.LinecastAll(a, b);
-        Debug.DrawLine(a, b, Color.red);
 
         foreach(RaycastHit2D hit in hits)
         {
-            //If something was hit, the RaycastHit2D.collider will not be null.
-            if (hit.collider.name != "DrawLine")
+            if (hit.collider.name != "DrawLine" && hit.collider.tag != "Character")
             {
                 return true;
             }
@@ -168,7 +165,7 @@ public class DrawLine2D : MonoBehaviour
         m_LineRenderer.startColor = ghostLineColor;
         m_LineRenderer.endColor = ghostLineColor;
 
-        m_EdgeCollider2D.isTrigger = true;
+        m_EdgeCollider2D.enabled = false;
     }
 
     protected virtual void CreateDefaultLineRenderer()
