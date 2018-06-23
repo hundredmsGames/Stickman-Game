@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
-    private Animator animator;
-
-    public float speed = 3f;
-
-    private Rigidbody2D rigidBody;
-
-    public DrawLine2D drawLine;
-
-    bool triggered;
-
     public GameObject topAngledRayPoint;
     public GameObject horizontalTop;
     public GameObject horizontalMiddle;
     public GameObject horizontalBottom;
-    Vector2 angledVector;
+
+    private Animator animator;
+    private Rigidbody2D rigidBody;
+    public DrawLine2D drawLine;
+
+    public float speed;
+    bool triggered;
 
     public float rayLength = 10f;
 
-    // Use this for initialization
-    void Start ()
+    // TODO: Find a better name for me.
+    Vector2 angledVector;
+
+
+    private void Start ()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -33,22 +32,37 @@ public class CharacterController : MonoBehaviour
         animator.SetFloat("Speed", 1f);
     }
 	
-	// Update is called once per frame
-	void Update ()
+    private void Update ()
     {
         CheckLine();
         CheckRays();
     }
 
+    private void FixedUpdate()
+    {
+        // Update character's position
+        rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag == "Ground" || collision.tag == "Wall")
+            return;
+
+        // TODO: Check which part of the body is damaged and save it.
+        triggered = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        triggered = false;
+    }
+
     // TODO: We can find better names for these methods.
-    void CheckLine()
+    private void CheckLine()
     {
         if (Input.GetMouseButtonUp(0))
         {
-            // FIXME: triggered is not true ever never, because there is not trigger
-            // for character right now. We need to add a trigger for every part of the character
-
-
             // Line is in the character, stop character
             if (triggered == true)
             {
@@ -56,18 +70,18 @@ public class CharacterController : MonoBehaviour
                                 RigidbodyConstraints2D.FreezeRotation;
 
                 // Don't enable collider. Because it has side effects like throwing character.
-                drawLine.MouseUp(false);
+                drawLine.StopDrawing(false);
             }
             // Line is not in the character
             else
             {
                 // Enable collider because line is not in the character.
-                drawLine.MouseUp(true);
+                drawLine.StopDrawing(true);
             }
         }
     }
 
-    void CheckRays()
+    private void CheckRays()
     {
         //for debug
         Debug.DrawLine(topAngledRayPoint.transform.position, RotateRay(topAngledRayPoint, 90, rayLength), Color.red);
@@ -94,27 +108,11 @@ public class CharacterController : MonoBehaviour
     private Vector2 RotateRay(GameObject go, float angle, float length)
     {
         Vector2 v = new Vector2(length, 0);
-       float newX = v.x * Mathf.Cos(angle * Mathf.Deg2Rad) + v.y * -Mathf.Sin(angle * Mathf.Deg2Rad);
-       float newY = v.x * Mathf.Sin(angle * Mathf.Deg2Rad) + v.y * Mathf.Cos(angle * Mathf.Deg2Rad);
+        float newX = v.x * Mathf.Cos(angle * Mathf.Deg2Rad) + v.y * -Mathf.Sin(angle * Mathf.Deg2Rad);
+        float newY = v.x * Mathf.Sin(angle * Mathf.Deg2Rad) + v.y * Mathf.Cos(angle * Mathf.Deg2Rad);
 
         newX += go.transform.position.x;
         newY += go.transform.position.y;
-        return new Vector2(newX,newY);
-    }
-
-    private void FixedUpdate()
-    {
-        // Update character's position
-        rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
-    }
-
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        triggered = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        triggered = false;
+        return new Vector2(newX, newY);
     }
 }

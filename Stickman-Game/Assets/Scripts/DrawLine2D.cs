@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class DrawLine2D : MonoBehaviour
 {
-    [SerializeField]
-    protected LineRenderer m_LineRenderer;
-    [SerializeField]
-    protected bool m_AddCollider = false;
-    [SerializeField]
-    protected EdgeCollider2D m_EdgeCollider2D;
-    [SerializeField]
-    protected Camera m_Camera;
-    protected List<Vector2> m_Points;
+    public LineRenderer lineRenderer;
+    public Camera cam;
+    public bool addCollider;
+
+    EdgeCollider2D edgeCollider2D;
+    List<Vector2> points;
     List<Vector2> colliderPoints;
 
     public Color lineColor;
@@ -20,140 +17,55 @@ public class DrawLine2D : MonoBehaviour
     public float lineWidth;
     public float edgeRadius;
 
-    public float lineLenLimit = 10f;
+    public float lineLenLimit = 30f;
     private float lineLength = 0f;
 
-    public virtual LineRenderer lineRenderer
+    private void Awake()
     {
-        get
-        {
-            return m_LineRenderer;
-        }
-    }
-
-    public virtual bool addCollider
-    {
-        get
-        {
-            return m_AddCollider;
-        }
-    }
-
-    public virtual EdgeCollider2D edgeCollider2D
-    {
-        get
-        {
-            return m_EdgeCollider2D;
-        }
-    }
-
-    public virtual List<Vector2> points
-    {
-        get
-        {
-            return m_Points;
-        }
-    }
-
-    protected virtual void Awake()
-    {
-        if (m_LineRenderer == null)
+        if (lineRenderer == null)
         {
             Debug.LogWarning("DrawLine: Line Renderer not assigned, Adding and Using default Line Renderer.");
             CreateDefaultLineRenderer();
         }
-        if (m_EdgeCollider2D == null && m_AddCollider)
+
+        if (edgeCollider2D == null && addCollider)
         {
             Debug.LogWarning("DrawLine: Edge Collider 2D not assigned, Adding and Using default Edge Collider 2D.");
             CreateDefaultEdgeCollider2D();
         }
-        if (m_Camera == null)
-        {
-            m_Camera = Camera.main;
-        }
-        m_Points = new List<Vector2>();
-        colliderPoints = new List<Vector2>();
 
-        m_EdgeCollider2D.enabled = false;
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
+
+        points = new List<Vector2>();
+        colliderPoints = new List<Vector2>();
     }
 
-    protected virtual void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-        {
             Reset();
-        }
 
         if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
-        {
-            Vector2 mousePosition = m_Camera.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 lineRendererPosition = m_LineRenderer.transform.position;
-            Vector2 colliderPos = mousePosition - lineRendererPosition;
-
-            if (m_Points.Count > 0)
-            {
-                if (IsThereObstacle(m_Points[m_Points.Count - 1], mousePosition) == true)
-                    return;
-            }
-
-            if (!m_Points.Contains(mousePosition))
-            {
-                if (m_Points.Count > 0)
-                {
-                    // Here, we measure line length
-                    lineLength += Vector2.Distance(m_Points[m_Points.Count - 1], mousePosition);
-                }
-
-                m_Points.Add(mousePosition);
-                m_LineRenderer.positionCount = m_Points.Count;
-                m_LineRenderer.SetPosition(m_LineRenderer.positionCount - 1, mousePosition);
-                colliderPoints.Add(colliderPos);
-
-                if (m_EdgeCollider2D != null && m_AddCollider && m_Points.Count > 1)
-                {
-                    m_EdgeCollider2D.points = colliderPoints.ToArray();
-                } 
-            }
-        }
+            Draw();
     }
 
-    public void MouseUp(bool enableCollider)
+    private void Reset()
     {
-        m_LineRenderer.startColor = lineColor;
-        m_LineRenderer.endColor = lineColor;
-
-        m_EdgeCollider2D.enabled = enableCollider;
-    }
-
-    private bool IsThereObstacle(Vector2 a, Vector2 b)
-    {
-        RaycastHit2D[] hits = Physics2D.LinecastAll(a, b);
-
-        foreach(RaycastHit2D hit in hits)
+        if (lineRenderer != null)
         {
-            if (hit.collider.name != "DrawLine" && hit.collider.tag != "Character")
-            {
-                return true;
-            }
-        }    
-
-        return false;
-    }
-
-    protected virtual void Reset()
-    {
-        if (m_LineRenderer != null)
-        {
-            m_LineRenderer.positionCount = 0;
+            lineRenderer.positionCount = 0;
         }
-        if (m_Points != null)
+        if (points != null)
         {
-            m_Points.Clear();
+            points.Clear();
         }
-        if (m_EdgeCollider2D != null && m_AddCollider)
+        if (edgeCollider2D != null && addCollider)
         {
-            m_EdgeCollider2D.Reset();
-            m_EdgeCollider2D.edgeRadius = 0.1f;
+            edgeCollider2D.Reset();
+            edgeCollider2D.edgeRadius = 0.1f;
         }
 
         if (colliderPoints != null)
@@ -162,28 +74,83 @@ public class DrawLine2D : MonoBehaviour
         // Set line length to 0
         lineLength = 0f;
 
-        m_LineRenderer.startColor = ghostLineColor;
-        m_LineRenderer.endColor = ghostLineColor;
+        lineRenderer.startColor = ghostLineColor;
+        lineRenderer.endColor = ghostLineColor;
 
-        m_EdgeCollider2D.enabled = false;
+        edgeCollider2D.isTrigger = true;
     }
 
-    protected virtual void CreateDefaultLineRenderer()
+    private void Draw()
     {
-        m_LineRenderer = gameObject.AddComponent<LineRenderer>();
-        m_LineRenderer.positionCount = 0;
-        m_LineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-        m_LineRenderer.startColor = ghostLineColor;
-        m_LineRenderer.endColor = ghostLineColor;
-        m_LineRenderer.startWidth = lineWidth;
-        m_LineRenderer.endWidth = lineWidth;
-        m_LineRenderer.useWorldSpace = true;
+        Vector2 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 lineRendererPosition = lineRenderer.transform.position;
+        Vector2 colliderPos = mousePosition - lineRendererPosition;
+
+        if (points.Count > 0)
+        {
+            if (IsThereObstacle(points[points.Count - 1], mousePosition) == true)
+                return;
+        }
+
+        if (!points.Contains(mousePosition))
+        {
+            if (points.Count > 0)
+            {
+                // Here, we measure line length
+                lineLength += Vector2.Distance(points[points.Count - 1], mousePosition);
+            }
+
+            points.Add(mousePosition);
+            lineRenderer.positionCount = points.Count;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, mousePosition);
+            colliderPoints.Add(colliderPos);
+
+            if (edgeCollider2D != null && addCollider && points.Count > 1)
+            {
+                edgeCollider2D.points = colliderPoints.ToArray();
+            }
+        }
     }
 
-    protected virtual void CreateDefaultEdgeCollider2D()
+    private void CreateDefaultLineRenderer()
     {
-        m_EdgeCollider2D = gameObject.AddComponent<EdgeCollider2D>();
-        m_EdgeCollider2D.edgeRadius = edgeRadius;
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.positionCount = 0;
+        lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+        lineRenderer.startColor = ghostLineColor;
+        lineRenderer.endColor = ghostLineColor;
+        lineRenderer.startWidth = lineWidth;
+        lineRenderer.endWidth = lineWidth;
+        lineRenderer.useWorldSpace = true;
     }
 
+    private void CreateDefaultEdgeCollider2D()
+    {
+        edgeCollider2D = gameObject.AddComponent<EdgeCollider2D>();
+        edgeCollider2D.edgeRadius = edgeRadius;
+        edgeCollider2D.isTrigger = true;
+    }
+
+    private bool IsThereObstacle(Vector2 a, Vector2 b)
+    {
+        RaycastHit2D[] hits = Physics2D.LinecastAll(a, b);
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider.name != "DrawLine" && hit.collider.tag != "Character")
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void StopDrawing(bool enableCollider)
+    {
+        lineRenderer.startColor = lineColor;
+        lineRenderer.endColor = lineColor;
+
+        edgeCollider2D.isTrigger = !enableCollider;
+    }
 }
