@@ -47,4 +47,9 @@ public class CharacterController : MonoBehaviour
     {
         triggered = true;
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        triggered = false;
+    }
 }
