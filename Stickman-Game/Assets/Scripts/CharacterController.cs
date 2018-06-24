@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public partial class CharacterController : MonoBehaviour
 {
     public GameObject topAngledRayPoint;
     public GameObject horizontalTop;
@@ -35,7 +35,7 @@ public class CharacterController : MonoBehaviour
     private void Update ()
     {
         CheckLine();
-        CheckRays();
+        CheckRaysRENAME();
     }
 
     private void FixedUpdate()

@@ -77,7 +77,8 @@ public class DrawLine2D : MonoBehaviour
         lineRenderer.startColor = ghostLineColor;
         lineRenderer.endColor = ghostLineColor;
 
-        edgeCollider2D.isTrigger = true;
+        if (edgeCollider2D != null)
+            edgeCollider2D.isTrigger = true;
     }
 
     private void Draw()

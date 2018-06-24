@@ -19,7 +19,7 @@ public partial class CharacterController : MonoBehaviour
         raycastHit2D = Physics2D.Linecast(topAngledRayPoint.transform.position, RotateRay(topAngledRayPoint, 90f, rayLength));
         if (/*charachter is crouching or crawling and*/ raycastHit2D.collider != null)
         {
-
+            //keep crawling or crouching -- keep doing what you're doing
         }
 
         //angled lineCast for empty spaces WE ARE GONNA JUMP
@@ -28,7 +28,8 @@ public partial class CharacterController : MonoBehaviour
         //after we decide player can change his mind
         if (raycastHit2D.collider != null)
         {
-
+            //there ise a gap ready to jump over
+            Debug.Log("jump over gap");
         }
 
 
@@ -101,6 +102,20 @@ public partial class CharacterController : MonoBehaviour
 
                 }
 
+            }
+            else
+            {
+                raycastHit2D = Physics2D.Linecast(horizontalBottom.transform.position, RotateRay(horizontalBottom, 0f, rayLength));
+                //if there is something in bottom too so we can try to climb
+                if (raycastHit2D.collider != null)
+                {
+                    //jump over bottom
+                    Debug.Log("jump over bottom");
+                }
+                else
+                {
+                    //walk trough
+                }
             }
         }
 
