@@ -13,19 +13,19 @@ public partial class CharacterController : MonoBehaviour
     void CheckRays()
     {
         // Vertical ray, (towards up)
-        RaycastHit2D verRaycastHit = Physics2D.Raycast(verticalRayPoint.position, Vector2.up * rayLength);
+        RaycastHit2D verRaycastHit = Physics2D.Raycast(verticalRayPoint.position, Vector2.up, rayLength);
         Debug.DrawRay(verticalRayPoint.position, Vector2.up * rayLength, Color.red);
 
         // Horizontal-Top ray
-        RaycastHit2D horTopRaycastHit = Physics2D.Raycast(horTopRayPoint.position, Vector2.right * rayLength);
+        RaycastHit2D horTopRaycastHit = Physics2D.Raycast(horTopRayPoint.position, Vector2.right, rayLength);
         Debug.DrawRay(horTopRayPoint.position, Vector2.right * rayLength, Color.green);
 
         // Horizontal-Middle ray
-        RaycastHit2D horMidRaycastHit = Physics2D.Raycast(horMidRayPoint.position, Vector2.right * rayLength);
+        RaycastHit2D horMidRaycastHit = Physics2D.Raycast(horMidRayPoint.position, Vector2.right, rayLength);
         Debug.DrawRay(horMidRayPoint.position, Vector2.right * rayLength, Color.white);
 
         // Horizontal-Bottom ray
-        RaycastHit2D horBottomRaycastHit = Physics2D.Raycast(horBottomRayPoint.position, Vector2.right * rayLength);
+        RaycastHit2D horBottomRaycastHit = Physics2D.Raycast(horBottomRayPoint.position, Vector2.right, rayLength);
         Debug.DrawRay(horBottomRayPoint.position, Vector2.right * rayLength, Color.yellow);
 
         // Angled Ray (for empty spaces)
@@ -34,7 +34,7 @@ public partial class CharacterController : MonoBehaviour
         Debug.DrawLine(verticalRayPoint.position, rayEndPoint, Color.blue);
 
 
-        if (/*charachter is crouching or crawling and*/ verRaycastHit.collider != null)
+        if ((crouching || crawling) && verRaycastHit.collider != null)
         {
             //keep crawling or crouching -- keep doing what you're doing
         }
@@ -114,6 +114,9 @@ public partial class CharacterController : MonoBehaviour
                 {
                     //jump over bottom
                     Debug.Log("jump over bottom");
+
+                    velocity.y = 8f;
+                    
                 }
                 else
                 {

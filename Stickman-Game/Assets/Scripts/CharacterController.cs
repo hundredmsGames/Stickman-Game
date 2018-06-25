@@ -1,18 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public partial class CharacterController : MonoBehaviour
 {
     private Animator animator;
     private Rigidbody2D rigidBody;
+
+    // DrawLine script reference
     public DrawLine2D drawLine;
 
-    public float speed;
-    bool triggered;
+    // Velocity of the character
+    private Vector2 velocity;
 
+    // Checks whether line is inside of the character 
+    private bool lineInsideChr;
+
+    // If character's legs touch something, character is grounded.
+    private bool grounded;
+
+    // If character is not grounded and also velocity at y-axis
+    // is positive then, that means, character is jumping.
+    private bool jumping;
+
+    // If character is not grounded and also velocity at y-axis
+    // is negative then, that means, characdter is falling.
+    private bool falling;
+
+    // If character is crouching, then it's true.
+    private bool crouching;
+
+    // If character is crawling, then it's true.
+    private bool crawling;
     
-
 
     private void Start ()
     {
@@ -21,6 +39,8 @@ public partial class CharacterController : MonoBehaviour
         
         // Run
         animator.SetFloat("Speed", 1f);
+
+        velocity = new Vector2(5f, 0f);
     }
 	
     private void Update ()
@@ -31,8 +51,8 @@ public partial class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Update character's position
-        rigidBody.velocity = new Vector2(speed, rigidBody.velocity.y);
+        // Update position of the character
+        rigidBody.velocity = new Vector2(velocity.x, rigidBody.velocity.y);
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -41,12 +61,12 @@ public partial class CharacterController : MonoBehaviour
             return;
 
         // TODO: Check which part of the body is damaged and save it.
-        triggered = true;
+        lineInsideChr = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        triggered = false;
+        lineInsideChr = false;
     }
 
     // TODO: We can find better names for these methods.
@@ -55,7 +75,7 @@ public partial class CharacterController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             // Line is in the character, stop character
-            if (triggered == true)
+            if (lineInsideChr == true)
             {
                 rigidBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX |
                                 RigidbodyConstraints2D.FreezeRotation;
