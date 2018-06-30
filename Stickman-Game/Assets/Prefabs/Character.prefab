@@ -2116,7 +2116,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drawLine: {fileID: 0}
-  speed: 5
   verticalRayPoint: {fileID: 4600243000508078}
   horTopRayPoint: {fileID: 4284946273054944}
   horMidRayPoint: {fileID: 4917205288748334}
