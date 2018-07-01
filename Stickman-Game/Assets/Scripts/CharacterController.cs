@@ -35,12 +35,12 @@ public partial class CharacterController : MonoBehaviour
     private void Start ()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         
         // Run
         animator.SetFloat("Speed", 1f);
 
-        velocity = new Vector2(5f, 0f);
+        velocity = new Vector2(8f, 0f);
     }
 	
     private void Update ()
