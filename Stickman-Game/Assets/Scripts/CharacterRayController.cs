@@ -8,6 +8,7 @@ public partial class CharacterController : MonoBehaviour
     public Transform horBottomRayPoint;
 
     public float rayLength;
+    private float angledRayLenght=100;
     public float rayAngle;
     
     void CheckRays()
@@ -29,7 +30,7 @@ public partial class CharacterController : MonoBehaviour
         Debug.DrawRay(horBottomRayPoint.position, Vector2.right * rayLength, Color.yellow);
 
         // Angled Ray (for empty spaces)
-        Vector2 rayEndPoint = RotateRay(verticalRayPoint, rayAngle, rayLength);
+        Vector2 rayEndPoint = RotateRay(verticalRayPoint, rayAngle, angledRayLenght);
         RaycastHit2D angledRaycastHit = Physics2D.Linecast(verticalRayPoint.position, rayEndPoint);
         Debug.DrawLine(verticalRayPoint.position, rayEndPoint, Color.blue);
 
@@ -45,6 +46,7 @@ public partial class CharacterController : MonoBehaviour
         {
             //there ise a gap ready to jump over
             Debug.Log("jump over gap");
+            jumping = true;
         }
 
 

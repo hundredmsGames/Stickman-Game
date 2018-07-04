@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public partial class CharacterController : MonoBehaviour
 {
+    public Transform groundedTransform;
+
     private Animator animator;
     private Rigidbody2D rigidBody;
 
@@ -30,23 +33,67 @@ public partial class CharacterController : MonoBehaviour
 
     // If character is crawling, then it's true.
     private bool crawling;
-    
 
-    private void Start ()
+
+    private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        
+
         // Run
         animator.SetFloat("Speed", 1f);
 
         velocity = new Vector2(8f, 0f);
     }
-	
-    private void Update ()
+
+    private void Update()
     {
         CheckLine();
         CheckRays();
+        IsFalling();
+        Jump();
+        CheckGrounded();
+    }
+
+    private void CheckGrounded()
+    {
+        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 2f);
+
+        foreach (Collider2D collider2D in colliders2D)
+        {
+            if (collider2D.tag == "Character")
+                continue;
+            else
+                grounded = true;
+
+        }
+
+
+        animator.SetBool("grounded", grounded);
+        grounded = false;
+    }
+
+    private void Jump()
+    {
+        if (jumping == true)
+        {
+
+            rigidBody.AddForce(new Vector2(2, 2), ForceMode2D.Impulse);
+
+        }
+        animator.SetBool("jumping", jumping);
+        jumping = false;
+    }
+
+    private void IsFalling()
+    {
+        if (rigidBody.velocity.y < -5)
+        {
+            falling = true;
+
+        }
+        animator.SetBool("falling", falling);
+        falling = false;
     }
 
     private void FixedUpdate()

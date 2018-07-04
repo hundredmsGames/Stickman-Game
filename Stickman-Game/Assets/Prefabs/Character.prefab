@@ -398,6 +398,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1674440602284472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4896872112026600}
+  m_Layer: 0
+  m_Name: grounded
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1677387350104910
 GameObject:
   m_ObjectHideFlags: 1
@@ -954,7 +969,7 @@ Transform:
   - {fileID: 4715742371531672}
   m_Father: {fileID: 4993177232611348}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 18.771002}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 18.77}
 --- !u!4 &4572572353015166
 Transform:
   m_ObjectHideFlags: 1
@@ -1150,6 +1165,7 @@ Transform:
   m_Children:
   - {fileID: 4974755389184752}
   - {fileID: 4687753996651932}
+  - {fileID: 4896872112026600}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1203,6 +1219,19 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4974755389184752}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4896872112026600
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1674440602284472}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.119, y: -2.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4769973587612502}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4897854416391744
@@ -1815,7 +1844,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 95bfb0d49cc0e514c81d4331e1249926, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2144,6 +2173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1c9a866829e5dd46b067a1932faf319, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundedTransform: {fileID: 0}
   drawLine: {fileID: 0}
   verticalRayPoint: {fileID: 4600243000508078}
   horTopRayPoint: {fileID: 4284946273054944}
