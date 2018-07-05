@@ -4,6 +4,7 @@ using UnityEngine;
 public partial class CharacterController : MonoBehaviour
 {
     public Transform groundedTransform;
+    public LayerMask groundedLayerMask;
 
     private Animator animator;
     private Rigidbody2D rigidBody;
@@ -34,7 +35,6 @@ public partial class CharacterController : MonoBehaviour
     // If character is crawling, then it's true.
     private bool crawling;
 
-
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -57,20 +57,12 @@ public partial class CharacterController : MonoBehaviour
 
     private void CheckGrounded()
     {
-        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 1f);
+        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 1f, groundedLayerMask);
 
-        foreach (Collider2D collider2D in colliders2D)
-        {
-            if (collider2D.tag == "Character")
-                continue;
-            else
-                grounded = true;
+        if (colliders2D.Length > 0)
+            grounded = true;
 
-        }
-
-
-        animator.SetBool("grounded", grounded);
-        
+        animator.SetBool("grounded", grounded);        
     }
 
     private void Jump()

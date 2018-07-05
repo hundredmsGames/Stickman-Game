@@ -20,6 +20,8 @@ public class DrawLine2D : MonoBehaviour
     public float lineLenLimit = 30f;
     private float lineLength = 0f;
 
+    public bool slowMotion;
+
     private void Awake()
     {
         if (lineRenderer == null)
@@ -50,6 +52,18 @@ public class DrawLine2D : MonoBehaviour
 
         if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
             Draw();
+
+        UpdateTimeScale();
+    }
+
+    private void UpdateTimeScale()
+    {
+        if (slowMotion == false)
+            Time.timeScale += Time.deltaTime * 1f;
+        else
+            Time.timeScale -= Time.deltaTime * 1.5f;
+
+        Time.timeScale = Mathf.Clamp(Time.timeScale, 0.5f, 1f);
     }
 
     private void Reset()
@@ -79,6 +93,8 @@ public class DrawLine2D : MonoBehaviour
 
         if (edgeCollider2D != null)
             edgeCollider2D.isTrigger = true;
+
+        slowMotion = true;
     }
 
     private void Draw()
@@ -153,5 +169,7 @@ public class DrawLine2D : MonoBehaviour
         lineRenderer.endColor = lineColor;
 
         edgeCollider2D.isTrigger = !enableCollider;
+
+        slowMotion = false;
     }
 }
