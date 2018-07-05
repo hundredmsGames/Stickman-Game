@@ -47,6 +47,7 @@ public partial class CharacterController : MonoBehaviour
             //there ise a gap ready to jump over
             Debug.Log("jump over gap");
             jumping = true;
+            grounded = false;
         }
 
 

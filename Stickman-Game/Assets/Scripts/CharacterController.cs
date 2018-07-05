@@ -51,13 +51,13 @@ public partial class CharacterController : MonoBehaviour
         CheckLine();
         CheckRays();
         IsFalling();
-        Jump();
         CheckGrounded();
+        Jump();
     }
 
     private void CheckGrounded()
     {
-        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 2f);
+        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 1f);
 
         foreach (Collider2D collider2D in colliders2D)
         {
@@ -70,15 +70,16 @@ public partial class CharacterController : MonoBehaviour
 
 
         animator.SetBool("grounded", grounded);
-        grounded = false;
+        
     }
 
     private void Jump()
     {
-        if (jumping == true)
+        if (jumping == true && grounded == true)
         {
-
-            rigidBody.AddForce(new Vector2(2, 2), ForceMode2D.Impulse);
+           // Debug.LogError("jump");
+            rigidBody.AddForce(new Vector2(2,2), ForceMode2D.Impulse);
+            jumping = true;
 
         }
         animator.SetBool("jumping", jumping);
