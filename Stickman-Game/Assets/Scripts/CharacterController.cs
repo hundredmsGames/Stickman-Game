@@ -62,7 +62,7 @@ public partial class CharacterController : MonoBehaviour
         if (colliders2D.Length > 0)
             grounded = true;
 
-        animator.SetBool("grounded", grounded);        
+        animator.SetBool("grounded", grounded);
     }
 
     private void Jump()
@@ -83,8 +83,10 @@ public partial class CharacterController : MonoBehaviour
         if (rigidBody.velocity.y < -5)
         {
             falling = true;
+            animator.SetBool("jumpOverBox", false);
 
         }
+
         animator.SetBool("falling", falling);
         falling = false;
     }

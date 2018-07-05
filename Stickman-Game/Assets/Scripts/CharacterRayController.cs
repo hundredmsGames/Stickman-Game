@@ -119,6 +119,7 @@ public partial class CharacterController : MonoBehaviour
                     Debug.Log("jump over bottom");
 
                     velocity.y = 8f;
+                    animator.SetBool("jumpOverBox", true);
                     
                 }
                 else
