@@ -10,8 +10,65 @@ public partial class CharacterController : MonoBehaviour
     public float rayLength;
     private float angledRayLenght=100;
     public float rayAngle;
-    
-    void CheckRays()
+
+
+    // TODO: Make every state an enum so we can easily create masks.
+    // GROUNDED | FALLING - like this.
+
+    /*  Most valuable bit is the leftmost one.
+     *  
+     *  Index 0: Bottom Horizontal Ray
+     *  Index 1: Middle Horizontal Ray
+     *  Index 2: Top    Horizontal Ray
+     *  Index 3: Angled Ray
+     *  Index 4: Vertical Ray
+     * 
+     *  Index 5: Crawling 
+     *  Index 6: Crouching
+     *  Index 7: Falling
+     *  Index 8: Jumping
+     *  Index 9: Grounded
+     *  
+     */
+    private int characterState;
+
+    private void UpdateCharacterState()
+    {
+        // Set character's state to 0 before doing anything.
+        characterState = 0;
+
+        CheckGrounded();
+        CheckFalling();
+        CheckRays();
+
+        PrintCharacterState();
+    }
+
+    private void CheckGrounded()
+    {
+        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 1f, groundedLayerMask);
+
+        if (colliders2D.Length > 0)
+        {
+            characterState |= (1 << 9);
+        }
+
+        //animator.SetBool("grounded", grounded);
+    }
+
+    private void CheckFalling()
+    {
+        if (rigidBody.velocity.y < -5f)
+        {
+            characterState |= (1 << 7);
+        
+            //animator.SetBool("jumpOverBox", false);
+        }
+
+        //animator.SetBool("falling", falling);
+    }
+
+    private void CheckRays()
     {
         // Vertical ray, (towards up)
         RaycastHit2D verRaycastHit = Physics2D.Raycast(verticalRayPoint.position, Vector2.up, rayLength);
@@ -34,7 +91,32 @@ public partial class CharacterController : MonoBehaviour
         RaycastHit2D angledRaycastHit = Physics2D.Linecast(verticalRayPoint.position, rayEndPoint);
         Debug.DrawLine(verticalRayPoint.position, rayEndPoint, Color.blue);
 
+        if(verRaycastHit.collider != null)
+        {
+            characterState |= (1 << 4);
+        }
 
+        if(angledRaycastHit.collider != null)
+        {
+            characterState |= (1 << 3);
+        }
+
+        if(horTopRaycastHit.collider != null)
+        {
+            characterState |= (1 << 2);
+        }
+
+        if(horMidRaycastHit.collider != null)
+        {
+            characterState |= (1 << 1);
+        }
+
+        if(horBottomRaycastHit.collider != null)
+        {
+            characterState |= (1 << 0);
+        }
+
+/*
         if ((crouching || crawling) && verRaycastHit.collider != null)
         {
             //keep crawling or crouching -- keep doing what you're doing
@@ -128,6 +210,7 @@ public partial class CharacterController : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     private Vector2 RotateRay(Transform t, float angle, float length)
@@ -139,5 +222,24 @@ public partial class CharacterController : MonoBehaviour
         newX += t.position.x;
         newY += t.position.y;
         return new Vector2(newX, newY);
+    }
+
+    private void PrintCharacterState()
+    {
+        int temp = characterState;
+        string prnt = "";
+
+        if (temp == 0)
+            prnt = "0";
+        else
+        {
+            while (temp != 0)
+            {
+                prnt = (temp % 2) + prnt;
+                temp /= 2;
+            }
+        }
+
+        Debug.Log(prnt);
     }
 }

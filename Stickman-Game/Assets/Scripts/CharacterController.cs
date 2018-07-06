@@ -49,52 +49,33 @@ public partial class CharacterController : MonoBehaviour
     private void Update()
     {
         CheckLine();
-        CheckRays();
-        IsFalling();
-        CheckGrounded();
-        Jump();
-    }
-
-    private void CheckGrounded()
-    {
-        Collider2D[] colliders2D = Physics2D.OverlapCircleAll(groundedTransform.position, 1f, groundedLayerMask);
-
-        if (colliders2D.Length > 0)
-            grounded = true;
-
-        animator.SetBool("grounded", grounded);
+        UpdateCharacterState();
+        //UpdateAnimations();
     }
 
     private void Jump()
     {
         if (jumping == true && grounded == true)
         {
-           // Debug.LogError("jump");
-            rigidBody.AddForce(new Vector2(2,2), ForceMode2D.Impulse);
+            // Debug.LogError("jump");
+            
             jumping = true;
 
         }
+
         animator.SetBool("jumping", jumping);
         jumping = false;
-    }
-
-    private void IsFalling()
-    {
-        if (rigidBody.velocity.y < -5)
-        {
-            falling = true;
-            animator.SetBool("jumpOverBox", false);
-
-        }
-
-        animator.SetBool("falling", falling);
-        falling = false;
     }
 
     private void FixedUpdate()
     {
         // Update position of the character
         rigidBody.velocity = new Vector2(velocity.x, rigidBody.velocity.y);
+
+        if ( (characterState & ~(1 << 9)) == 0)
+        {
+            rigidBody.AddForce(new Vector2(2, 2), ForceMode2D.Impulse);
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
