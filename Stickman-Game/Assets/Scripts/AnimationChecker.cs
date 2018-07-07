@@ -6,28 +6,35 @@ public class AnimationChecker : MonoBehaviour {
 
     public static AnimationChecker Instance;
     public bool JumpOverAnimationEnded { get; set; }
-                                       // Use this for initialization
-    void Start () {
+    public bool animationEnded;
+
+    // Use this for initialization
+    void Start ()
+    {
         if (Instance != null)
             return;
+
         Instance = this;
         JumpOverAnimationEnded = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+        animationEnded = false;
+    }
+
+    public void AnimationEnded()
+    {
+        animationEnded = true;
+        Debug.Log("animation ended");
+    }
    
     public void JumpOverObstacleAnimationStarted()
     {
         JumpOverAnimationEnded = false;
-        Debug.Log("JumpOverObstacleAnimationStarted");
+        //Debug.Log("JumpOverObstacleAnimationStarted");
     }
     public void JumpOverObstacleAnimationEnded()
     {
         JumpOverAnimationEnded = true;
-        Debug.Log("JumpOverObstacleAnimationEnded");
+        //Debug.Log("JumpOverObstacleAnimationEnded");
 
     }
 }

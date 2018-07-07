@@ -12,6 +12,17 @@ public partial class CharacterController
     public float rayAngle;
 
 
+    public const int BOT_HOR_RAY = 1;
+    public const int MID_HOR_RAY = 2;
+    public const int TOP_HOR_RAY = 4;
+    public const int ANGLED_RAY = 8;
+    public const int VERTICAL_RAY= 16;
+    public const int CRAWLING = 32;
+    public const int CROUCHING = 64;
+    public const int FALLING = 128;
+    public const int JUMPING = 256;
+    public const int GROUNDED = 512;
+
     // TODO: Make every state an enum so we can easily create masks.
     // GROUNDED | FALLING - like this.
 
@@ -41,7 +52,7 @@ public partial class CharacterController
         CheckFalling();
         CheckRays();
 
-        PrintCharacterState();
+        //PrintCharacterState();
     }
 
     private void CheckGrounded()
@@ -50,7 +61,7 @@ public partial class CharacterController
 
         if (colliders2D.Length > 0)
         {
-            characterState |= (1 << 9);
+            characterState |= GROUNDED;
         }
 
         //animator.SetBool("grounded", grounded);
@@ -93,27 +104,27 @@ public partial class CharacterController
 
         if(verRaycastHit.collider != null)
         {
-            characterState |= (1 << 4);
+            characterState |= VERTICAL_RAY;
         }
 
         if(angledRaycastHit.collider != null)
         {
-            characterState |= (1 << 3);
+            characterState |= ANGLED_RAY;
         }
 
         if(horTopRaycastHit.collider != null)
         {
-            characterState |= (1 << 2);
+            characterState |= TOP_HOR_RAY;
         }
 
         if(horMidRaycastHit.collider != null)
         {
-            characterState |= (1 << 1);
+            characterState |= MID_HOR_RAY;
         }
 
         if(horBottomRaycastHit.collider != null)
         {
-            characterState |= (1 << 0);
+            characterState |= BOT_HOR_RAY;
         }
 
         #region Old Desicion tree
@@ -240,6 +251,7 @@ public partial class CharacterController
 
         Debug.Log(prnt);
     }
+
     string GetBinaryFormOfCharacterState()
     {
         int temp = characterState;
