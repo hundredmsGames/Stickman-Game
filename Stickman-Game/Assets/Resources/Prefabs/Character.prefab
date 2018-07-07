@@ -453,9 +453,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4974755389184752}
+  - component: {fileID: 114688955374239282}
   - component: {fileID: 95780002878848714}
   - component: {fileID: 114641044127827424}
-  - component: {fileID: 114688955374239282}
   m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
@@ -2275,7 +2275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61391ef7ce6c9ed4c8fd9ead851bf7f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationEnded: 0
+  chrController: {fileID: 114613373933055236}
 --- !u!114 &114694315190634168
 MonoBehaviour:
   m_ObjectHideFlags: 1

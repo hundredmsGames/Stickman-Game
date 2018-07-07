@@ -22,14 +22,29 @@ public partial class CharacterController : MonoBehaviour
     // Checks whether line is inside of the character 
     private bool lineInsideChr;
 
+    // If character's legs touch something, character is grounded.
+    private bool grounded;
+
+    // If character is not grounded and also velocity at y-axis
+    // is positive then, that means, character is jumping.
+    private bool jumping;
+
+    // If character is not grounded and also velocity at y-axis
+    // is negative then, that means, characdter is falling.
+    private bool falling;
+
+    // If character is crouching, then it's true.
+    private bool crouching;
+
+    // If character is crawling, then it's true.
+    private bool crawling;
+
     private void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
 
         velocity = new Vector2(8f, 0f);
-
-        AnimationStart();
     }
 
     private void Update()
@@ -48,10 +63,9 @@ public partial class CharacterController : MonoBehaviour
         // Update position of the character
         rigidBody.velocity = new Vector2(velocity.x, rigidBody.velocity.y);
 
-        if ( (characterState & ~GROUNDED) == 0)
-        {
+        if(jumping == true)
             rigidBody.AddForce(new Vector2(2, 2), ForceMode2D.Impulse);
-        }
+        
     }
 
     private void OnTriggerStay2D(Collider2D collision)

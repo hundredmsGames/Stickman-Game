@@ -7,6 +7,12 @@ public partial class CharacterController
     public Transform horMidRayPoint;
     public Transform horBottomRayPoint;
 
+    private RaycastHit2D verRaycastHit;
+    private RaycastHit2D horTopRaycastHit;
+    private RaycastHit2D horMidRaycastHit;
+    private RaycastHit2D horBottomRaycastHit;
+    private RaycastHit2D angledRaycastHit;
+
     public float rayLength;
     private float angledRayLenght=100;
     public float rayAngle;
@@ -17,14 +23,6 @@ public partial class CharacterController
     public const int TOP_HOR_RAY = 4;
     public const int ANGLED_RAY = 8;
     public const int VERTICAL_RAY= 16;
-    public const int CRAWLING = 32;
-    public const int CROUCHING = 64;
-    public const int FALLING = 128;
-    public const int JUMPING = 256;
-    public const int GROUNDED = 512;
-
-    // TODO: Make every state an enum so we can easily create masks.
-    // GROUNDED | FALLING - like this.
 
     /*  Most valuable bit is the leftmost one.
      *  
@@ -33,12 +31,6 @@ public partial class CharacterController
      *  Index 2: Top    Horizontal Ray
      *  Index 3: Angled Ray
      *  Index 4: Vertical Ray
-     * 
-     *  Index 5: Crawling 
-     *  Index 6: Crouching
-     *  Index 7: Falling
-     *  Index 8: Jumping
-     *  Index 9: Grounded
      *  
      */
     private int characterState;
@@ -48,10 +40,11 @@ public partial class CharacterController
         // Set character's state to 0 before doing anything.
         characterState = 0;
 
-        CheckGrounded();
-        CheckFalling();
         CheckRays();
-
+        CheckGrounded();
+        CheckJumping();
+        CheckFalling();
+        
         //PrintCharacterState();
     }
 
@@ -61,45 +54,60 @@ public partial class CharacterController
 
         if (colliders2D.Length > 0)
         {
-            characterState |= GROUNDED;
+            grounded = true;
         }
+        else
+        {
+            grounded = false;
+        }
+    }
 
-        //animator.SetBool("grounded", grounded);
+    private void CheckJumping()
+    {
+        if(grounded == true && (horBottomRaycastHit.collider != null ||
+            angledRaycastHit.collider == null))
+        {
+            jumping = true;
+        }
+        else
+        {
+            jumping = false;
+        }
     }
 
     private void CheckFalling()
     {
         if (rigidBody.velocity.y < -5f)
         {
-            characterState |= (1 << 7);
-        
-            //animator.SetBool("jumpOverBox", false);
+            falling = true;
         }
-
-        //animator.SetBool("falling", falling);
+        else
+        {
+            falling = false;
+        }
     }
 
     private void CheckRays()
     {
         // Vertical ray, (towards up)
-        RaycastHit2D verRaycastHit = Physics2D.Raycast(verticalRayPoint.position, Vector2.up, rayLength);
+        verRaycastHit = Physics2D.Raycast(verticalRayPoint.position, Vector2.up, rayLength);
         Debug.DrawRay(verticalRayPoint.position, Vector2.up * rayLength, Color.red);
 
         // Horizontal-Top ray
-        RaycastHit2D horTopRaycastHit = Physics2D.Raycast(horTopRayPoint.position, Vector2.right, rayLength);
+        horTopRaycastHit = Physics2D.Raycast(horTopRayPoint.position, Vector2.right, rayLength);
         Debug.DrawRay(horTopRayPoint.position, Vector2.right * rayLength, Color.green);
 
         // Horizontal-Middle ray
-        RaycastHit2D horMidRaycastHit = Physics2D.Raycast(horMidRayPoint.position, Vector2.right, rayLength);
+        horMidRaycastHit = Physics2D.Raycast(horMidRayPoint.position, Vector2.right, rayLength);
         Debug.DrawRay(horMidRayPoint.position, Vector2.right * rayLength, Color.white);
 
         // Horizontal-Bottom ray
-        RaycastHit2D horBottomRaycastHit = Physics2D.Raycast(horBottomRayPoint.position, Vector2.right, rayLength);
+        horBottomRaycastHit = Physics2D.Raycast(horBottomRayPoint.position, Vector2.right, rayLength);
         Debug.DrawRay(horBottomRayPoint.position, Vector2.right * rayLength, Color.yellow);
 
         // Angled Ray (for empty spaces)
         Vector2 rayEndPoint = RotateRay(verticalRayPoint, rayAngle, angledRayLenght);
-        RaycastHit2D angledRaycastHit = Physics2D.Linecast(verticalRayPoint.position, rayEndPoint);
+        angledRaycastHit = Physics2D.Linecast(verticalRayPoint.position, rayEndPoint);
         Debug.DrawLine(verticalRayPoint.position, rayEndPoint, Color.blue);
 
         if(verRaycastHit.collider != null)
@@ -252,7 +260,7 @@ public partial class CharacterController
         Debug.Log(prnt);
     }
 
-    string GetBinaryFormOfCharacterState()
+    private string GetBinaryFormOfCharacterState()
     {
         int temp = characterState;
         string binary = "";
