@@ -15,6 +15,10 @@ public partial class CharacterController : MonoBehaviour
     // Velocity of the character
     private Vector2 velocity;
 
+
+    float characterMaxSpeed = 8;
+    float characterMinSpeed = 0;
+
     // Checks whether line is inside of the character 
     private bool lineInsideChr;
 
@@ -40,8 +44,7 @@ public partial class CharacterController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
 
-        // Run
-        animator.SetFloat("Speed", 1f);
+      
 
         velocity = new Vector2(8f, 0f);
     }
@@ -50,7 +53,8 @@ public partial class CharacterController : MonoBehaviour
     {
         CheckLine();
         UpdateCharacterState();
-        //UpdateAnimations();
+        UpdateCharacterAnimations();
+        
     }
 
     private void Jump()
@@ -63,7 +67,7 @@ public partial class CharacterController : MonoBehaviour
 
         }
 
-        animator.SetBool("jumping", jumping);
+       // animator.SetBool("jumping", jumping);
         jumping = false;
     }
 

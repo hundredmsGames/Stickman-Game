@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public partial class CharacterController : MonoBehaviour
+public partial class CharacterController
 {
     public Transform verticalRayPoint;
     public Transform horTopRayPoint;
@@ -116,101 +116,103 @@ public partial class CharacterController : MonoBehaviour
             characterState |= (1 << 0);
         }
 
-/*
-        if ((crouching || crawling) && verRaycastHit.collider != null)
-        {
-            //keep crawling or crouching -- keep doing what you're doing
-        }
-
-        //we have empty space decide what to do
-        //after we decide player can change his mind
-        if (angledRaycastHit.collider == null)
-        {
-            //there ise a gap ready to jump over
-            Debug.Log("jump over gap");
-            jumping = true;
-            grounded = false;
-        }
-
-
-        //we have 3 line casts for checking either we have somethin on our way like obstacles that we can jump over 
-        //that we can climb or we can crouch or crawl
-        //if there is something on top so we can crouch maybe
-        if (horTopRaycastHit.collider != null)
-        {
-            //if there  is something in the middle so we can crawl maybe
-            if (horMidRaycastHit.collider != null)
-            {
-                //if there is something in bottom too so we can try to climb
-                if (horBottomRaycastHit.collider != null)
+        #region Old Desicion tree
+        /*
+                if ((crouching || crawling) && verRaycastHit.collider != null)
                 {
-                    //climb (running on wall)
-                    Debug.Log("climb (running on wall)");
+                    //keep crawling or crouching -- keep doing what you're doing
+                }
+
+                //we have empty space decide what to do
+                //after we decide player can change his mind
+                if (angledRaycastHit.collider == null)
+                {
+                    //there ise a gap ready to jump over
+                    Debug.Log("jump over gap");
+                    jumping = true;
+                    grounded = false;
+                }
+
+
+                //we have 3 line casts for checking either we have somethin on our way like obstacles that we can jump over 
+                //that we can climb or we can crouch or crawl
+                //if there is something on top so we can crouch maybe
+                if (horTopRaycastHit.collider != null)
+                {
+                    //if there  is something in the middle so we can crawl maybe
+                    if (horMidRaycastHit.collider != null)
+                    {
+                        //if there is something in bottom too so we can try to climb
+                        if (horBottomRaycastHit.collider != null)
+                        {
+                            //climb (running on wall)
+                            Debug.Log("climb (running on wall)");
+                        }
+                        else
+                        {
+                            //crawl
+                            Debug.Log("crawl");
+                        }
+                    }
+                    //if there is nothing in middle
+                    else
+                    {
+                        //if there is something in bottom too so we can try to climb
+                        if (horBottomRaycastHit.collider != null && horBottomRaycastHit.collider.tag != "Character")
+                        {
+                            Debug.Log("jump between bottom and top");
+                        }
+                        else
+                        {
+                            Debug.Log("crouch");
+                        }
+                    }
                 }
                 else
                 {
-                    //crawl
-                    Debug.Log("crawl");
-                }
-            }
-            //if there is nothing in middle
-            else
-            {
-                //if there is something in bottom too so we can try to climb
-                if (horBottomRaycastHit.collider != null && horBottomRaycastHit.collider.tag != "Character")
-                {
-                    Debug.Log("jump between bottom and top");
-                }
-                else
-                {
-                    Debug.Log("crouch");
-                }
-            }
-        }
-        else
-        {
-            //if there  is something in the middle so we can jump and climb
-            if (horMidRaycastHit.collider != null)
-            {
-                float randomNumber = Random.Range(0f, 1f);
+                    //if there  is something in the middle so we can jump and climb
+                    if (horMidRaycastHit.collider != null)
+                    {
+                        float randomNumber = Random.Range(0f, 1f);
 
-                //if there is something in bottom too so we can try to climb
-                if (horBottomRaycastHit.collider != null)
-                {
-                    //climb jump
-                    Debug.Log("climb (jump)");
-                }
-                else if (randomNumber < 0.5)
-                {
-                    //crawl
-                    Debug.Log("crawl");
+                        //if there is something in bottom too so we can try to climb
+                        if (horBottomRaycastHit.collider != null)
+                        {
+                            //climb jump
+                            Debug.Log("climb (jump)");
+                        }
+                        else if (randomNumber < 0.5)
+                        {
+                            //crawl
+                            Debug.Log("crawl");
 
-                }
-                else
-                {
-                    // climb Jump
-                    Debug.Log("climb (jump)");
-                }
-            }
-            else
-            {
-                //if there is something in bottom too so we can try to climb
-                if (horBottomRaycastHit.collider != null)
-                {
-                    //jump over bottom
-                    Debug.Log("jump over bottom");
+                        }
+                        else
+                        {
+                            // climb Jump
+                            Debug.Log("climb (jump)");
+                        }
+                    }
+                    else
+                    {
+                        //if there is something in bottom too so we can try to climb
+                        if (horBottomRaycastHit.collider != null)
+                        {
+                            //jump over bottom
+                            Debug.Log("jump over bottom");
 
-                    velocity.y = 8f;
-                    animator.SetBool("jumpOverBox", true);
-                    
+                            velocity.y = 8f;
+                            animator.SetBool("jumpOverBox", true);
+
+                        }
+                        else
+                        {
+                            //walk trough
+                        }
+                    }
                 }
-                else
-                {
-                    //walk trough
-                }
-            }
-        }
-        */
+                */
+        #endregion
     }
 
     private Vector2 RotateRay(Transform t, float angle, float length)
@@ -233,13 +235,20 @@ public partial class CharacterController : MonoBehaviour
             prnt = "0";
         else
         {
-            while (temp != 0)
-            {
-                prnt = (temp % 2) + prnt;
-                temp /= 2;
-            }
+            prnt = GetBinaryFormOfCharacterState();
         }
 
         Debug.Log(prnt);
+    }
+    string GetBinaryFormOfCharacterState()
+    {
+        int temp = characterState;
+        string binary = "";
+        while (temp != 0)
+        {
+            binary = (temp % 2) + binary;
+            temp /= 2;
+        }
+        return binary;
     }
 }
