@@ -3,49 +3,32 @@
 public partial class CharacterController
 {
     public Transform verticalRayPoint;
-    public Transform horTopRayPoint;
-    public Transform horMidRayPoint;
-    public Transform horBottomRayPoint;
+    public Transform horRayPoint_1;
+    public Transform horRayPoint_2;
+    public Transform horRayPoint_3;
 
     private RaycastHit2D verRaycastHit;
-    private RaycastHit2D horTopRaycastHit;
-    private RaycastHit2D horMidRaycastHit;
-    private RaycastHit2D horBottomRaycastHit;
+    private RaycastHit2D horRaycastHit_1;
+    private RaycastHit2D horRaycastHit_2;
+    private RaycastHit2D horRaycastHit_3;
     private RaycastHit2D angledRaycastHit;
 
+    private float verHitLen;
+    private float horHitLen_1;
+    private float horHitLen_2;
+    private float horHitLen_3;
+    private float angledHitLen;
+
     public float rayLength;
-    private float angledRayLenght=100;
+    private float angledRayLength = 30;
     public float rayAngle;
-
-
-    public const int BOT_HOR_RAY = 1;
-    public const int MID_HOR_RAY = 2;
-    public const int TOP_HOR_RAY = 4;
-    public const int ANGLED_RAY = 8;
-    public const int VERTICAL_RAY= 16;
-
-    /*  Most valuable bit is the leftmost one.
-     *  
-     *  Index 0: Bottom Horizontal Ray
-     *  Index 1: Middle Horizontal Ray
-     *  Index 2: Top    Horizontal Ray
-     *  Index 3: Angled Ray
-     *  Index 4: Vertical Ray
-     *  
-     */
-    private int characterState;
 
     private void UpdateCharacterState()
     {
-        // Set character's state to 0 before doing anything.
-        characterState = 0;
-
         CheckRays();
         CheckGrounded();
         CheckJumping();
         CheckFalling();
-        
-        //PrintCharacterState();
     }
 
     private void CheckGrounded()
@@ -64,7 +47,7 @@ public partial class CharacterController
 
     private void CheckJumping()
     {
-        if(grounded == true && (horBottomRaycastHit.collider != null ||
+        if(grounded == true && (horRaycastHit_1.collider != null ||
             angledRaycastHit.collider == null))
         {
             jumping = true;
@@ -94,45 +77,52 @@ public partial class CharacterController
         Debug.DrawRay(verticalRayPoint.position, Vector2.up * rayLength, Color.red);
 
         // Horizontal-Top ray
-        horTopRaycastHit = Physics2D.Raycast(horTopRayPoint.position, Vector2.right, rayLength);
-        Debug.DrawRay(horTopRayPoint.position, Vector2.right * rayLength, Color.green);
+        horRaycastHit_3 = Physics2D.Raycast(horRayPoint_3.position, Vector2.right, rayLength);
+        Debug.DrawRay(horRayPoint_3.position, Vector2.right * rayLength, Color.green);
 
         // Horizontal-Middle ray
-        horMidRaycastHit = Physics2D.Raycast(horMidRayPoint.position, Vector2.right, rayLength);
-        Debug.DrawRay(horMidRayPoint.position, Vector2.right * rayLength, Color.white);
+        horRaycastHit_2 = Physics2D.Raycast(horRayPoint_2.position, Vector2.right, rayLength);
+        Debug.DrawRay(horRayPoint_2.position, Vector2.right * rayLength, Color.white);
 
         // Horizontal-Bottom ray
-        horBottomRaycastHit = Physics2D.Raycast(horBottomRayPoint.position, Vector2.right, rayLength);
-        Debug.DrawRay(horBottomRayPoint.position, Vector2.right * rayLength, Color.yellow);
+        horRaycastHit_1 = Physics2D.Raycast(horRayPoint_1.position, Vector2.right, rayLength);
+        Debug.DrawRay(horRayPoint_1.position, Vector2.right * rayLength, Color.yellow);
 
         // Angled Ray (for empty spaces)
-        Vector2 rayEndPoint = RotateRay(verticalRayPoint, rayAngle, angledRayLenght);
+        Vector2 rayEndPoint = RotateRay(verticalRayPoint, rayAngle, angledRayLength);
         angledRaycastHit = Physics2D.Linecast(verticalRayPoint.position, rayEndPoint);
         Debug.DrawLine(verticalRayPoint.position, rayEndPoint, Color.blue);
 
-        if(verRaycastHit.collider != null)
+        verHitLen = float.PositiveInfinity;
+        horHitLen_1 = float.PositiveInfinity;
+        horHitLen_2 = float.PositiveInfinity;
+        horHitLen_3 = float.PositiveInfinity;
+        angledHitLen = float.PositiveInfinity;
+
+
+        if (verRaycastHit.collider != null)
         {
-            characterState |= VERTICAL_RAY;
+            verHitLen = verRaycastHit.distance;
         }
 
         if(angledRaycastHit.collider != null)
         {
-            characterState |= ANGLED_RAY;
+            angledHitLen = angledRaycastHit.distance;
         }
 
-        if(horTopRaycastHit.collider != null)
+        if (horRaycastHit_1.collider != null)
         {
-            characterState |= TOP_HOR_RAY;
+            horHitLen_1 = horRaycastHit_1.distance;
         }
 
-        if(horMidRaycastHit.collider != null)
+        if (horRaycastHit_2.collider != null)
         {
-            characterState |= MID_HOR_RAY;
+            horHitLen_2 = horRaycastHit_2.distance;
         }
 
-        if(horBottomRaycastHit.collider != null)
+        if (horRaycastHit_3.collider != null)
         {
-            characterState |= BOT_HOR_RAY;
+            horHitLen_3 = horRaycastHit_3.distance;
         }
 
         #region Old Desicion tree
@@ -243,32 +233,5 @@ public partial class CharacterController
         newX += t.position.x;
         newY += t.position.y;
         return new Vector2(newX, newY);
-    }
-
-    private void PrintCharacterState()
-    {
-        int temp = characterState;
-        string prnt = "";
-
-        if (temp == 0)
-            prnt = "0";
-        else
-        {
-            prnt = GetBinaryFormOfCharacterState();
-        }
-
-        Debug.Log(prnt);
-    }
-
-    private string GetBinaryFormOfCharacterState()
-    {
-        int temp = characterState;
-        string binary = "";
-        while (temp != 0)
-        {
-            binary = (temp % 2) + binary;
-            temp /= 2;
-        }
-        return binary;
     }
 }
