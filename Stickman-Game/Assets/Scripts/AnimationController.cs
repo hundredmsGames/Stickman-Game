@@ -9,7 +9,7 @@ public partial class CharacterController
         //IdleWalkRunAnim();
         //CharacterStateAnimations();
 
-        
+
         animator.SetBool("isJumping", jumping);
         animator.SetBool("isRunning", grounded);
         animator.SetBool("isFalling", falling);
@@ -17,11 +17,11 @@ public partial class CharacterController
     }
 
     public void JumpingAnimationEnded()
-    {   
+    {
     }
 
     public void JumpOverAnimationEnded()
-    {   
+    {
     }
 
     public void FallingAnimationEnded()
@@ -30,22 +30,11 @@ public partial class CharacterController
 
     private void OnGUI()
     {
-        
+
         GUI.color = Color.blue;
-        
-        string animationInfo = "";
-        if (grounded)
-        {
-            animationInfo = "running";
-        }
-        if (jumping)
-        {
-            animationInfo = "jumping";
-        }
-        if(falling)
-        {
-            animationInfo = "falling";
-        }
-        GUI.Label(new Rect(0, 0, 100, 100), animationInfo);
+
+        GUI.Label(new Rect(0, 00, 100, 100), "Running :" + grounded.ToString(), new GUIStyle() { fontSize = 16 });
+        GUI.Label(new Rect(0, 20, 100, 100), "Jumping :" + jumping.ToString(), new GUIStyle() { fontSize = 16 });
+        GUI.Label(new Rect(0, 40, 100, 100), "Falling    :" + falling.ToString(), new GUIStyle() { fontSize = 16 });
     }
 }
