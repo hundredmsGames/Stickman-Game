@@ -2209,9 +2209,9 @@ MonoBehaviour:
     m_Bits: 4294967039
   drawLine: {fileID: 0}
   verticalRayPoint: {fileID: 4600243000508078}
-  horTopRayPoint: {fileID: 4284946273054944}
-  horMidRayPoint: {fileID: 4917205288748334}
-  horBottomRayPoint: {fileID: 4710281891073262}
+  horRayPoint_1: {fileID: 0}
+  horRayPoint_2: {fileID: 0}
+  horRayPoint_3: {fileID: 0}
   rayLength: 8
   rayAngle: -70
 --- !u!114 &114621274497537888

@@ -27,4 +27,25 @@ public partial class CharacterController
     public void FallingAnimationEnded()
     {
     }
+
+    private void OnGUI()
+    {
+        
+        GUI.color = Color.blue;
+        
+        string animationInfo = "";
+        if (grounded)
+        {
+            animationInfo = "running";
+        }
+        if (jumping)
+        {
+            animationInfo = "jumping";
+        }
+        if(falling)
+        {
+            animationInfo = "falling";
+        }
+        GUI.Label(new Rect(0, 0, 100, 100), animationInfo);
+    }
 }

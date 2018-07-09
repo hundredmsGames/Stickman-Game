@@ -41,6 +41,7 @@ public partial class CharacterController : MonoBehaviour
 
     private void Start()
     {
+        
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
 

@@ -745,6 +745,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &187956604 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4710281891073262, guid: 8cccd8b027150244e8574f236593a774,
+    type: 2}
+  m_PrefabInternal: {fileID: 1803885479}
 --- !u!1 &205202228
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,6 +2270,11 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &1746792068 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4917205288748334, guid: 8cccd8b027150244e8574f236593a774,
+    type: 2}
+  m_PrefabInternal: {fileID: 1803885479}
 --- !u!1 &1755777048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2470,6 +2480,26 @@ Prefab:
       propertyPath: drawLine
       value: 
       objectReference: {fileID: 205202229}
+    - target: {fileID: 114613373933055236, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: horRayPoint_1
+      value: 
+      objectReference: {fileID: 187956604}
+    - target: {fileID: 114613373933055236, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: horRayPoint_2
+      value: 
+      objectReference: {fileID: 1746792068}
+    - target: {fileID: 114613373933055236, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: horRayPoint_3
+      value: 
+      objectReference: {fileID: 2123398333}
+    - target: {fileID: 50729524463409732, guid: 8cccd8b027150244e8574f236593a774,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 87004866615a42c43a4b107093319520, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8cccd8b027150244e8574f236593a774, type: 2}
   m_IsPrefabParent: 0
@@ -2778,3 +2808,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!4 &2123398333 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4284946273054944, guid: 8cccd8b027150244e8574f236593a774,
+    type: 2}
+  m_PrefabInternal: {fileID: 1803885479}
