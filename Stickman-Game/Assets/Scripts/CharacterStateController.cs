@@ -44,7 +44,10 @@ public partial class CharacterController
             grounded = false;
         }
     }
+    private void CheckJumpOver()
+    {
 
+    }
     private void CheckJumping()
     {
         if(grounded == true && (horRaycastHit_1.collider != null ||
