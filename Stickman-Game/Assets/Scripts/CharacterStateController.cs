@@ -29,6 +29,7 @@ public partial class CharacterController
         CheckGrounded();
         CheckJumping();
         CheckFalling();
+        CheckJumpOver();
     }
 
     private void CheckGrounded()
@@ -44,14 +45,22 @@ public partial class CharacterController
             grounded = false;
         }
     }
+
     private void CheckJumpOver()
     {
-
+        if(horHitLen_1 < 1f)
+        {
+            jumpOver = true;    
+        }
+        else
+        {
+            jumpOver = false;
+        }
     }
+
     private void CheckJumping()
     {
-        if(grounded == true && (horRaycastHit_1.collider != null ||
-            angledRaycastHit.collider == null))
+        if(grounded == true && angledRaycastHit.collider == null)
         {
             jumping = true;
         }
@@ -63,7 +72,7 @@ public partial class CharacterController
 
     private void CheckFalling()
     {
-        if (rigidBody.velocity.y < -5f)
+        if (grounded != true && rigidBody.velocity.y < 0f)
         {
             falling = true;
         }

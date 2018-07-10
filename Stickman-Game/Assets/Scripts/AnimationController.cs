@@ -6,14 +6,10 @@ public partial class CharacterController
 {
     void UpdateCharacterAnimations()
     {
-        //IdleWalkRunAnim();
-        //CharacterStateAnimations();
-
-
         animator.SetBool("isJumping", jumping);
         animator.SetBool("isRunning", grounded);
         animator.SetBool("isFalling", falling);
-        //animator.SetBool("isJumpOver", jumping);
+        animator.SetBool("isJumpOver", jumpOver);
     }
 
     public void JumpingAnimationEnded()
@@ -36,5 +32,8 @@ public partial class CharacterController
         GUI.Label(new Rect(0, 00, 100, 100), "Running :" + grounded.ToString(), new GUIStyle() { fontSize = 16 });
         GUI.Label(new Rect(0, 20, 100, 100), "Jumping :" + jumping.ToString(), new GUIStyle() { fontSize = 16 });
         GUI.Label(new Rect(0, 40, 100, 100), "Falling    :" + falling.ToString(), new GUIStyle() { fontSize = 16 });
+        GUI.Label(new Rect(0, 60, 100, 100), "Grounded   :" + grounded.ToString(), new GUIStyle() { fontSize = 16 });
+        GUI.Label(new Rect(0, 80, 100, 100), "JumpOver   :" + jumpOver.ToString(), new GUIStyle() { fontSize = 16 });
+
     }
 }

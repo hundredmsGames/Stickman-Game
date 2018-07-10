@@ -33,6 +33,8 @@ public partial class CharacterController : MonoBehaviour
     // is negative then, that means, characdter is falling.
     private bool falling;
 
+    private bool jumpOver;
+
     // If character is crouching, then it's true.
     private bool crouching;
 
@@ -55,6 +57,7 @@ public partial class CharacterController : MonoBehaviour
         UpdateCharacterAnimations();
 
 
+
         velocity.y = rigidBody.velocity.y;
     }
 
@@ -62,9 +65,9 @@ public partial class CharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         // Update position of the character
-        rigidBody.velocity = new Vector2(velocity.x, rigidBody.velocity.y);
+        rigidBody.velocity = new Vector2(Input.GetAxis("Horizontal") * velocity.x, rigidBody.velocity.y);
 
-        if(jumping == true)
+        if(jumping == true || jumpOver == true)
             rigidBody.AddForce(new Vector2(2, 2), ForceMode2D.Impulse);
         
     }
