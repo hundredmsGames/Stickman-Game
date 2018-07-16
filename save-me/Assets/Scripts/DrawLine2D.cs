@@ -52,7 +52,10 @@ public class DrawLine2D : MonoBehaviour
 
         if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
             Draw();
-
+        else
+        {
+            StopDrawing(true);
+        }
         UpdateTimeScale();
     }
 
