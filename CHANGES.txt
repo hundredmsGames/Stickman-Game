@@ -1,7 +1,10 @@
 =-=-=-=-=-==-=-=-=-=-= TODO =-=-=-=-=-==-=-=-=-=-= 
--
--
--
+-find the right spot to draw line (use linecast)
+-line has the collider while you're drawing it
+-check if the camera shakes when you use velocity instead of addForce
+-if it does shake then search it ...
+-every time you die you will restart the game from the first position
+
 
 
 
