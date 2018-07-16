@@ -1,2 +1,2 @@
-# Stickman-Game
-This is a stickman game. Save The stick Man.
+# save-me
+Draw lines to save our little circle.
