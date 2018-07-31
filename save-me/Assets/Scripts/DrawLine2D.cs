@@ -5,6 +5,7 @@ using UnityEngine;
 public class DrawLine2D : MonoBehaviour
 {
     public LineRenderer lineRenderer;
+    public Material lineMaterial;
     public Camera cam;
     public bool addCollider;
 
@@ -13,7 +14,6 @@ public class DrawLine2D : MonoBehaviour
     List<Vector2> colliderPoints;
 
     public Color lineColor;
-    public Color ghostLineColor;
     public float lineWidth;
     public float edgeRadius;
 
@@ -52,10 +52,10 @@ public class DrawLine2D : MonoBehaviour
 
         if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
             Draw();
-        else
-        {
-            StopDrawing(true);
-        }
+
+        if (Input.GetMouseButtonUp(0))
+            slowMotion = false;
+        
         UpdateTimeScale();
     }
 
@@ -71,32 +71,14 @@ public class DrawLine2D : MonoBehaviour
 
     private void Reset()
     {
-        if (lineRenderer != null)
-        {
-            lineRenderer.positionCount = 0;
-        }
-        if (points != null)
-        {
-            points.Clear();
-        }
-        if (edgeCollider2D != null && addCollider)
-        {
-            edgeCollider2D.Reset();
-            edgeCollider2D.edgeRadius = 0.1f;
-        }
-
-        if (colliderPoints != null)
-            colliderPoints.Clear();
+        lineRenderer.positionCount = 0;
+        points.Clear();
+        edgeCollider2D.Reset();
+        edgeCollider2D.edgeRadius = edgeRadius;
+        colliderPoints.Clear();
 
         // Set line length to 0
         lineLength = 0f;
-
-        lineRenderer.startColor = ghostLineColor;
-        lineRenderer.endColor = ghostLineColor;
-
-        if (edgeCollider2D != null)
-            edgeCollider2D.isTrigger = true;
-
         slowMotion = true;
     }
 
@@ -108,8 +90,8 @@ public class DrawLine2D : MonoBehaviour
 
         if (points.Count > 0)
         {
-            if (IsThereObstacle(points[points.Count - 1], mousePosition) == true)
-                return;
+            mousePosition = GetProperEndPoint(points[points.Count - 1], mousePosition);
+            colliderPos = mousePosition - lineRendererPosition;
         }
 
         if (!points.Contains(mousePosition))
@@ -136,9 +118,9 @@ public class DrawLine2D : MonoBehaviour
     {
         lineRenderer = gameObject.AddComponent<LineRenderer>();
         lineRenderer.positionCount = 0;
-        lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-        lineRenderer.startColor = ghostLineColor;
-        lineRenderer.endColor = ghostLineColor;
+        lineRenderer.material = lineMaterial;
+        lineRenderer.startColor = lineColor;
+        lineRenderer.endColor = lineColor;
         lineRenderer.startWidth = lineWidth;
         lineRenderer.endWidth = lineWidth;
         lineRenderer.useWorldSpace = true;
@@ -148,7 +130,22 @@ public class DrawLine2D : MonoBehaviour
     {
         edgeCollider2D = gameObject.AddComponent<EdgeCollider2D>();
         edgeCollider2D.edgeRadius = edgeRadius;
-        edgeCollider2D.isTrigger = true;
+    }
+
+    private Vector2 GetProperEndPoint(Vector2 start, Vector2 end)
+    {
+        RaycastHit2D[] hits = Physics2D.LinecastAll(start, end);
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider.name != "DrawLine")
+            {
+                end = hit.point + hit.normal * edgeRadius;
+                break;
+            }
+        }
+
+        return end;
     }
 
     private bool IsThereObstacle(Vector2 a, Vector2 b)
@@ -166,13 +163,5 @@ public class DrawLine2D : MonoBehaviour
         return false;
     }
 
-    public void StopDrawing(bool enableCollider)
-    {
-        lineRenderer.startColor = lineColor;
-        lineRenderer.endColor = lineColor;
 
-        edgeCollider2D.isTrigger = !enableCollider;
-
-        slowMotion = false;
-    }
 }

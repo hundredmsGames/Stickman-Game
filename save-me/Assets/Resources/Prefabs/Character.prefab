@@ -79,9 +79,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4085334651826426}
+  - component: {fileID: 114826489053406832}
   - component: {fileID: 212058096801615094}
   - component: {fileID: 50927906939811622}
-  - component: {fileID: 114826489053406832}
   - component: {fileID: 58133636964634218}
   m_Layer: 0
   m_Name: Character
@@ -89,7 +89,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1766924052190650
 GameObject:
   m_ObjectHideFlags: 1
