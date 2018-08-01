@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DrawLine2D : MonoBehaviour
 {
+    private GameController gameController;
+
     public LineRenderer lineRenderer;
     public Material lineMaterial;
     public Camera cam;
@@ -22,7 +25,9 @@ public class DrawLine2D : MonoBehaviour
 
     public bool slowMotion;
 
-    private void Awake()
+    public float timeee;
+
+    private void Start()
     {
         if (lineRenderer == null)
         {
@@ -41,14 +46,27 @@ public class DrawLine2D : MonoBehaviour
             cam = Camera.main;
         }
 
+        gameController = GameController.Instance;
+
         points = new List<Vector2>();
         colliderPoints = new List<Vector2>();
     }
 
     private void Update()
     {
+        timeee = Time.timeScale;
+        // If mouse over UI Gameobject, don't draw anything.
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if(gameController.gamePaused == true)
+            return;
+
         if (Input.GetMouseButtonDown(0))
+        {
+            slowMotion = true;
             Reset();
+        }
 
         if (Input.GetMouseButton(0) && lineLength <= lineLenLimit)
             Draw();
@@ -61,15 +79,16 @@ public class DrawLine2D : MonoBehaviour
 
     private void UpdateTimeScale()
     {
+        float timeScale = Time.timeScale;
         if (slowMotion == false)
-            Time.timeScale += Time.deltaTime * 1f;
+            timeScale += Time.deltaTime * 1f;
         else
-            Time.timeScale -= Time.deltaTime * 1.5f;
+            timeScale -= Time.deltaTime * 2f;
 
-        Time.timeScale = Mathf.Clamp(Time.timeScale, 0.5f, 1f);
+        Time.timeScale = Mathf.Clamp(timeScale, 0.4f, 1f);
     }
 
-    private void Reset()
+    public void Reset()
     {
         lineRenderer.positionCount = 0;
         points.Clear();
@@ -79,7 +98,6 @@ public class DrawLine2D : MonoBehaviour
 
         // Set line length to 0
         lineLength = 0f;
-        slowMotion = true;
     }
 
     private void Draw()
