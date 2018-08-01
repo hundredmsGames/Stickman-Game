@@ -2,19 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
+    //panel active events
+    public delegate void PanelActiveHandler(bool active);
+    public event PanelActiveHandler FailedPanelActiveChanged;
+    public event PanelActiveHandler FinishedPanelActiveChanged;
+    public event PanelActiveHandler PausedPanelActiveChanged;
+
+    //Button events
+    public delegate void ButtonHandler(object info,UnityEngine.Events.UnityAction function);
+    public event ButtonHandler PauseResumeButtonClicked;
 
     public CharacterController character;
     public DrawLine2D drawLine;
 
     public bool gamePaused;
-
-    Action<bool> setFailedPanel;
-    Action<bool> setFinishedPanel;
-
 
     // Use this for initialization
     void Awake ()
@@ -23,19 +29,33 @@ public class GameController : MonoBehaviour
             return;
 
         Instance = this;
+        
 	}
-
-    public void PauseGame()
+    public void Failed()
     {
-        setFailedPanel(true);
+        FailedPanelActiveChanged(true);
         gamePaused = true;
         Time.timeScale = 0;
+    }
+    public void PauseGame()
+    {
+        PausedPanelActiveChanged(true);
+        PauseResumeButtonClicked("Resume", ResumeGame);
+        gamePaused = true;
+        Time.timeScale = 0;
+    }
+    public void ResumeGame()
+    {
+        PausedPanelActiveChanged(false);
+        PauseResumeButtonClicked("Pause", PauseGame);
+        gamePaused = false;
+        Time.timeScale = 1;
     }
 
     public void RestartGame()
     {
-        setFinishedPanel(false);
-        setFailedPanel(false);
+        FinishedPanelActiveChanged(false);
+        FailedPanelActiveChanged(false);
         character.ResetCharacter();
         drawLine.Reset();
         gamePaused = false;
@@ -44,18 +64,8 @@ public class GameController : MonoBehaviour
     // Find better names for this methods.
     public void FinishedGame()
     {
-        setFinishedPanel(true);
+        FinishedPanelActiveChanged(true);
         gamePaused = true;
         Time.timeScale = 0;
-    }
-
-    public void RegisterToggleFailedPanel(Action<bool> cb)
-    {
-        setFailedPanel += cb;
-    }
-
-    public void RegisterFinishedPanel(Action<bool> cb)
-    {
-        setFinishedPanel += cb;
     }
 }

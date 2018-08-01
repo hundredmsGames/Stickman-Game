@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Controller : MonoBehaviour
 {
@@ -8,13 +10,28 @@ public class UI_Controller : MonoBehaviour
     public GameObject panelFailed;
     public GameObject panelFinished;
 
+    public GameObject panelPaused;
+    public Button pauseResumeButton;
+    private Text pauseText;
+
+
     private void Start()
     {
         gameController = GameController.Instance;
 
-        gameController.RegisterToggleFailedPanel(SetFailedPanel);
-        gameController.RegisterFinishedPanel(SetFinishedPanel);
+        pauseText = pauseResumeButton.GetComponentInChildren<Text>();
 
+        gameController.FailedPanelActiveChanged += SetFailedPanel;
+        gameController.FinishedPanelActiveChanged += SetFinishedPanel;
+        gameController.PausedPanelActiveChanged += SetPausedPanel;
+        gameController.PauseResumeButtonClicked += GameController_PauseResumeButtonClicked;
+    }
+
+    private void GameController_PauseResumeButtonClicked(object info, UnityEngine.Events.UnityAction function)
+    {
+        pauseText.text = (string)info;
+        pauseResumeButton.onClick.RemoveAllListeners();
+        pauseResumeButton.onClick.AddListener(function);
     }
 
     public void SetFailedPanel(bool active)
@@ -27,5 +44,11 @@ public class UI_Controller : MonoBehaviour
         panelFinished.SetActive(active);
     }
 
+    public void SetPausedPanel(bool active)
+    {
+        panelPaused.SetActive(active);
 
+    }
+
+   
 }

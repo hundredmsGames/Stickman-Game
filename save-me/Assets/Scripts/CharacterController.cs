@@ -27,7 +27,7 @@ public partial class CharacterController : MonoBehaviour
     private void Update()
     {
         if (transform.position.y < -20f || transform.position.x > 180f)
-            gameController.PauseGame();
+            gameController.Failed();
 
     }
 
