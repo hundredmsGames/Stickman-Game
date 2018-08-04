@@ -1,7 +1,12 @@
 =-=-=-=-=-==-=-=-=-=-= TODO =-=-=-=-=-==-=-=-=-=-= 
 -check if the camera shakes when you use velocity instead of addForce
 -if it does shake then search it ...
-
+-create some traps like ball touches the ground and ground will fall kinda like that
+-traps like falling on the ball
+-another types of traps
+-UI Design 
+-camera's y axis will be locked
+-died from great fall or didnt stink the landing
 
 
 
