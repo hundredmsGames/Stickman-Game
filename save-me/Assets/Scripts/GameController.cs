@@ -40,14 +40,14 @@ public class GameController : MonoBehaviour
     public void PauseGame()
     {
         PausedPanelActiveChanged(true);
-        PauseResumeButtonClicked("Resume", ResumeGame);
+        PauseResumeButtonClicked(null, ResumeGame);
         gamePaused = true;
         Time.timeScale = 0;
     }
     public void ResumeGame()
     {
         PausedPanelActiveChanged(false);
-        PauseResumeButtonClicked("Pause", PauseGame);
+        PauseResumeButtonClicked(null, PauseGame);
         gamePaused = false;
         Time.timeScale = 1;
     }
