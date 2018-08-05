@@ -44,12 +44,20 @@ public partial class CharacterController : MonoBehaviour
         transform.position = startPos;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        if (collision.tag == "Finish")
-            gameController.FinishedGame();
-        else if (collision.tag == "Trap")
+        if (col.gameObject.tag == "Trap")
             gameController.Failed();
 
+        Debug.Log(col.gameObject.tag);
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.tag == "Finish")
+            gameController.FinishedGame();
+        else if (col.tag == "Trap")
+            gameController.Failed();
     }
 }
