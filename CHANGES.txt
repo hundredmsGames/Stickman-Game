@@ -4,13 +4,14 @@
 -create some traps like ball touches the ground and ground will fall kinda like that
 -traps like falling on the ball
 -another types of traps
--UI Design 
--camera's y axis will be locked
 -died from great fall or didnt stink the landing
-
+-Improve UI design.
+-Make your own line renderer.
 
 
 =-=-=-=-=-==-=-=-=-=-= DONE =-=-=-=-=-==-=-=-=-=-=
 +find the right spot to draw line (use linecast)
 +line has the collider while you're drawing it
 +every time you die you will restart the game from the first position
++camera's y axis will be locked
++UI Design

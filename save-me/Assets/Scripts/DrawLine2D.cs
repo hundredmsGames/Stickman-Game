@@ -25,8 +25,6 @@ public class DrawLine2D : MonoBehaviour
 
     public bool slowMotion;
 
-    public float timeee;
-
     private void Start()
     {
         if (lineRenderer == null)
@@ -54,7 +52,6 @@ public class DrawLine2D : MonoBehaviour
 
     private void Update()
     {
-        timeee = Time.timeScale;
         // If mouse over UI Gameobject, don't draw anything.
         if (EventSystem.current.IsPointerOverGameObject())
             return;
@@ -75,29 +72,6 @@ public class DrawLine2D : MonoBehaviour
             slowMotion = false;
         
         UpdateTimeScale();
-    }
-
-    private void UpdateTimeScale()
-    {
-        float timeScale = Time.timeScale;
-        if (slowMotion == false)
-            timeScale += Time.deltaTime * 1f;
-        else
-            timeScale -= Time.deltaTime * 2f;
-
-        Time.timeScale = Mathf.Clamp(timeScale, 0.4f, 1f);
-    }
-
-    public void Reset()
-    {
-        lineRenderer.positionCount = 0;
-        points.Clear();
-        edgeCollider2D.Reset();
-        edgeCollider2D.edgeRadius = edgeRadius;
-        colliderPoints.Clear();
-
-        // Set line length to 0
-        lineLength = 0f;
     }
 
     private void Draw()
@@ -127,9 +101,33 @@ public class DrawLine2D : MonoBehaviour
 
             if (edgeCollider2D != null && addCollider && points.Count > 1)
             {
+                edgeCollider2D.isTrigger = false;
                 edgeCollider2D.points = colliderPoints.ToArray();
             }
         }
+    }
+
+    private void UpdateTimeScale()
+    {
+        float timeScale = Time.timeScale;
+        if (slowMotion == false)
+            timeScale += Time.deltaTime * 1f;
+        else
+            timeScale -= Time.deltaTime * 2f;
+
+        Time.timeScale = Mathf.Clamp(timeScale, 0.4f, 1f);
+    }
+
+    public void Reset()
+    {
+        lineRenderer.positionCount = 0;
+        edgeCollider2D.Reset();
+        edgeCollider2D.edgeRadius = edgeRadius;
+        colliderPoints.Clear();
+        points.Clear();
+
+        // Set line length to 0
+        lineLength = 0f;
     }
 
     private void CreateDefaultLineRenderer()
@@ -148,6 +146,7 @@ public class DrawLine2D : MonoBehaviour
     {
         edgeCollider2D = gameObject.AddComponent<EdgeCollider2D>();
         edgeCollider2D.edgeRadius = edgeRadius;
+        edgeCollider2D.isTrigger = true;
     }
 
     private Vector2 GetProperEndPoint(Vector2 start, Vector2 end)
@@ -165,21 +164,4 @@ public class DrawLine2D : MonoBehaviour
 
         return end;
     }
-
-    private bool IsThereObstacle(Vector2 a, Vector2 b)
-    {
-        RaycastHit2D[] hits = Physics2D.LinecastAll(a, b);
-
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.name != "DrawLine" && hit.collider.tag != "Character")
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
 }
