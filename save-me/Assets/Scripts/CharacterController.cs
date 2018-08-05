@@ -48,12 +48,8 @@ public partial class CharacterController : MonoBehaviour
     {
         if (collision.tag == "Finish")
             gameController.FinishedGame();
+        else if (collision.tag == "Trap")
+            gameController.Failed();
 
-    }
-
-
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(0, 0, 100, 100), rigidbody2D.velocity.x.ToString("f2") + "");
     }
 }
