@@ -17,6 +17,7 @@ public class GameController : MonoBehaviour
     public delegate void ButtonHandler(object info,UnityEngine.Events.UnityAction function);
     public event ButtonHandler PauseResumeButtonClicked;
 
+    public TrapController trapController;
     public CharacterController character;
     public DrawLine2D drawLine;
 
@@ -57,6 +58,7 @@ public class GameController : MonoBehaviour
         FinishedPanelActiveChanged(false);
         FailedPanelActiveChanged(false);
         character.ResetCharacter();
+        trapController.DestroyTraps();
         drawLine.Reset();
         gamePaused = false;
     }

@@ -48,9 +48,8 @@ public partial class CharacterController : MonoBehaviour
     {
         if (col.gameObject.tag == "Trap")
             gameController.Failed();
-
-        Debug.Log(col.gameObject.tag);
-
+        else if (col.gameObject.tag == "Water")
+            gameController.Failed();
     }
 
     private void OnTriggerEnter2D(Collider2D col)

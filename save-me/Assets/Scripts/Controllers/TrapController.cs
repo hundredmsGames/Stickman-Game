@@ -8,6 +8,7 @@ public class TrapController : MonoBehaviour
     public Transform character;
     public GameObject trapPrefab;
     public GameObject levelContainer;
+    private List<GameObject> trapGoList;
 
     private float trapY;
     private float dropTime;
@@ -18,6 +19,8 @@ public class TrapController : MonoBehaviour
 
         // y-position of camera - half height of camera - little bit offset.
         trapY = mainCamera.transform.position.y + mainCamera.orthographicSize + 2f;
+
+        trapGoList = new List<GameObject>();
 	}
 	
 	void Update ()
@@ -25,10 +28,12 @@ public class TrapController : MonoBehaviour
         // Drop a trap
 		if(dropTime <= 0f)
         {
-            GameObject trap = Instantiate(trapPrefab, levelContainer.transform, true);
+            GameObject trapGo = Instantiate(trapPrefab, levelContainer.transform, true);
+            trapGo.tag = "Trap";
+            trapGoList.Add(trapGo);
 
             float trapX = character.position.x + Random.Range(4f, 10f);
-            trap.transform.position = new Vector3(trapX, trapY, 0f);
+            trapGo.transform.position = new Vector3(trapX, trapY, 0f);
 
             dropTime = Random.Range(3f, 6f);
         }
@@ -38,4 +43,12 @@ public class TrapController : MonoBehaviour
             dropTime -= Time.deltaTime;
         }
 	}
+
+    public void DestroyTraps()
+    {
+        foreach (GameObject go in trapGoList)
+            Destroy(go);
+
+        trapGoList.Clear();
+    }
 }

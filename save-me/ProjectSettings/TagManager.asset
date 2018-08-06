@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Wall
   - Trap
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Water
+    uniqueID: 990713405
+    locked: 0
+  - name: Ground
+    uniqueID: 3056663617
+    locked: 0
+  - name: Wall
+    uniqueID: 2403035241
+    locked: 0
+  - name: Trap
+    uniqueID: 697109051
+    locked: 0
+  - name: Character
+    uniqueID: 2752830121
     locked: 0
