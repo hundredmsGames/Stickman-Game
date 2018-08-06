@@ -1,9 +1,6 @@
 =-=-=-=-=-==-=-=-=-=-= TODO =-=-=-=-=-==-=-=-=-=-= 
 -check if the camera shakes when you use velocity instead of addForce
 -if it does shake then search it ...
--create some traps like ball touches the ground and ground will fall kinda like that
--another types of traps
--died from great fall or didnt stink the landing
 -Improve UI design.
 -Make your own line renderer.
 -add water to bottom so we can know how did ball died(perlin noise)
