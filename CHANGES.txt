@@ -6,6 +6,9 @@
 -died from great fall or didnt stink the landing
 -Improve UI design.
 -Make your own line renderer.
+-add water to bottom so we can know how did ball died(perlin noise)
+-add info to failed screen so we can know how did ball died
+-breakable platforms like glass  
 
 
 =-=-=-=-=-==-=-=-=-=-= DONE =-=-=-=-=-==-=-=-=-=-=

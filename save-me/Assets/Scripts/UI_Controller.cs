@@ -29,10 +29,11 @@ public class UI_Controller : MonoBehaviour
 
     private void GameController_PauseResumeButtonClicked(object info, UnityEngine.Events.UnityAction function)
     {
-        if(info is string)
-        pauseText.text = (string)info;
-        pauseResumeButton.onClick.RemoveAllListeners();
-        pauseResumeButton.onClick.AddListener(function);
+        if (info is string)
+            pauseText.text = (string)info;
+            pauseResumeButton.onClick.RemoveAllListeners();
+            pauseResumeButton.onClick.AddListener(function);
+       
     }
 
     public void SetFailedPanel(bool active)
