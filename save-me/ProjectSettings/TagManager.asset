@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Trap
   - Water
+  - DrawLine
   layers:
   - Default
   - TransparentFX
@@ -48,6 +49,9 @@ TagManager:
     locked: 0
   - name: Water
     uniqueID: 990713405
+    locked: 0
+  - name: Line
+    uniqueID: 3781029823
     locked: 0
   - name: Ground
     uniqueID: 3056663617

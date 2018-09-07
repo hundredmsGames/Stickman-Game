@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
@@ -19,7 +15,6 @@ public class GameController : MonoBehaviour
 
     public TrapController trapController;
     public CharacterController character;
-    public DrawLine2D drawLine;
 
     public bool gamePaused;
 
@@ -59,7 +54,6 @@ public class GameController : MonoBehaviour
         FailedPanelActiveChanged(false);
         character.ResetCharacter();
         trapController.DestroyTraps();
-        drawLine.Reset();
         gamePaused = false;
     }
 
