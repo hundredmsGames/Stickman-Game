@@ -47,7 +47,6 @@ public class GameController : MonoBehaviour
         gamePaused = false;
         Time.timeScale = 1;
     }
-
     public void RestartGame()
     {
         FinishedPanelActiveChanged(false);
@@ -55,6 +54,7 @@ public class GameController : MonoBehaviour
         character.ResetCharacter();
         trapController.DestroyTraps();
         gamePaused = false;
+        Time.timeScale = 1;
     }
 
     // Find better names for this methods.

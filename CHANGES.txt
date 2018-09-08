@@ -6,8 +6,10 @@
 -add water to bottom so we can know how did ball died(perlin noise)
 -add info to failed screen so we can know how did ball died
 -breakable platforms like glass  
-
-
+-RestartButton
+	-after restart the game we need traps back
+	-we need drawings gone(pooling maybe?)
+	-
 =-=-=-=-=-==-=-=-=-=-= DONE =-=-=-=-=-==-=-=-=-=-=
 +find the right spot to draw line (use linecast)
 +line has the collider while you're drawing it

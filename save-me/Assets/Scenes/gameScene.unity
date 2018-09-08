@@ -5487,7 +5487,7 @@ GameObject:
   - component: {fileID: 1367911765}
   - component: {fileID: 1367911764}
   m_Layer: 5
-  m_Name: Button_Resume
+  m_Name: Button_ReStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
