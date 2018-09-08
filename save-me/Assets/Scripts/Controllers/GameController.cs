@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
 
     public TrapController trapController;
     public CharacterController character;
+    public DrawLine drawLine;
 
     public bool gamePaused;
 
@@ -24,15 +25,16 @@ public class GameController : MonoBehaviour
         if (Instance != null)
             return;
 
-        Instance = this;
-        
+        Instance = this;      
 	}
+
     public void Failed()
     {
         FailedPanelActiveChanged(true);
         gamePaused = true;
         Time.timeScale = 0;
     }
+
     public void PauseGame()
     {
         PausedPanelActiveChanged(true);
@@ -40,6 +42,7 @@ public class GameController : MonoBehaviour
         gamePaused = true;
         Time.timeScale = 0;
     }
+
     public void ResumeGame()
     {
         PausedPanelActiveChanged(false);
@@ -47,11 +50,13 @@ public class GameController : MonoBehaviour
         gamePaused = false;
         Time.timeScale = 1;
     }
+
     public void RestartGame()
     {
         FinishedPanelActiveChanged(false);
         FailedPanelActiveChanged(false);
         character.ResetCharacter();
+        drawLine.ResetLine();
         trapController.DestroyTraps();
         gamePaused = false;
         Time.timeScale = 1;

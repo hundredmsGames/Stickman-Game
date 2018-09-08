@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Controller : MonoBehaviour
@@ -14,12 +11,11 @@ public class UI_Controller : MonoBehaviour
     public Button pauseResumeButton;
     private Text pauseText;
 
-
     private void Start()
     {
         gameController = GameController.Instance;
 
-        pauseText = pauseResumeButton.GetComponentInChildren<Text>();
+        //pauseText = pauseResumeButton.GetComponentInChildren<Text>();
 
         gameController.FailedPanelActiveChanged += SetFailedPanel;
         gameController.FinishedPanelActiveChanged += SetFinishedPanel;

@@ -89,6 +89,17 @@ public class DrawLine : MonoBehaviour
         }
     }
 
+    public void ResetLine()
+    {
+        foreach (GameObject go in lineGoList)
+            Destroy(go);
+
+        foreach (GameObject go in circleGoList)
+            Destroy(go);
+
+        points.Clear();
+    }
+
     private void CreateLine(Vector2 p1, Vector2 p2)
     {
         float distance = Vector2.Distance(p1, p2);
