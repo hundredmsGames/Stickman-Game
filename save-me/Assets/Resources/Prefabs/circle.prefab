@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4667061610509482}
   - component: {fileID: 212619583079207728}
   - component: {fileID: 58738862645074106}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: circle
   m_TagString: DrawLine
   m_Icon: {fileID: 0}

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4771795459240934}
   - component: {fileID: 212633722456943394}
   - component: {fileID: 61681349636403868}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: square
   m_TagString: DrawLine
   m_Icon: {fileID: 0}

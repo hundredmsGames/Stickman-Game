@@ -1,19 +1,17 @@
-=-=-=-=-=-==-=-=-=-=-= TODO =-=-=-=-=-==-=-=-=-=-= 
--check if the camera shakes when you use velocity instead of addForce
--if it does shake then search it ...
--Improve UI design.
--Make your own line renderer.
--add water to bottom so we can know how did ball died(perlin noise)
--add info to failed screen so we can know how did ball died
--breakable platforms like glass  
--RestartButton
-	-after restart the game we need traps back
-	-we need drawings gone(pooling maybe?)
-	-
-=-=-=-=-=-==-=-=-=-=-= DONE =-=-=-=-=-==-=-=-=-=-=
-+find the right spot to draw line (use linecast)
-+line has the collider while you're drawing it
-+every time you die you will restart the game from the first position
-+camera's y axis will be locked
-+UI Design
-+traps like falling on the ball
+=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= TODO =-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+- Research unity's cinematic cameras
+- Improve water (perlin noise)
+- Add info to failed screen so we can know how did ball died
+- Breakable platforms like glass  
+- Think adding a pool for destroyed objects
+
+=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= DONE =-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
++ Find the right spot to draw line (use linecast)
++ Line has the collider while you're drawing it
++ Every time you die you will restart the game from the first position
++ Camera's y axis will be locked
++ Traps like falling on the ball
++ Make your own line renderer.
++ Add water to bottom so we can know how did ball died
++ After restart the game, destroy traps and lines
++ Add area effectors

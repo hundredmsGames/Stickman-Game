@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class DrawLine : MonoBehaviour
 {
+    #region Variables
+
     private Camera mainCamera;
     public GameObject squarePrefab;
     public GameObject circlePrefab;
@@ -15,8 +17,13 @@ public class DrawLine : MonoBehaviour
     private Vector2 mousePosition;
     private Vector2 lastMousePos;
 
-    private float lineWidth = 0.3f;
+    private float lineWidth = 0.4f;
     private bool resetLine;
+
+    // Cast all but exclude "Line" and "AreaEffector".
+    private int layerMask = ~((1 << 8) | (1 << 9));
+
+    #endregion
 
     private void Start()
     {
@@ -49,25 +56,24 @@ public class DrawLine : MonoBehaviour
 
     private void Draw()
     {
-        Collider2D[] cols = Physics2D.OverlapPointAll(mousePosition);
-        foreach (Collider2D col in cols)
+        if(resetLine == true)
         {
-            if (col.tag != "DrawLine" && resetLine == true)
-            {
-                return;
-            }
-        }
+            Collider2D[] cols = Physics2D.OverlapPointAll(mousePosition, layerMask);
 
-        if (resetLine == false)
-        {
-            if (points.Count > 0)
-            {
-                mousePosition = GetAppropriateEndPoint(points[points.Count - 1], mousePosition);
-            }
-        }
-        else
-        {
+            // If we started draw and also we are in a obstacle. In this situation,
+            // we should not draw anything, just return.
+            if (cols.Length > 0)
+                return;
+
+            // If resetLine is true, line would be drawn inside an obstacle,
+            // so we need to find an appropriate start point.
             FindAppropriateStartPoint(lastMousePos, mousePosition);
+        }
+        // If resetLine is false, that means we are drawing continuously.
+        // In this situation, we just need to look for an appropriate end point.
+        else
+        {  
+            mousePosition = GetAppropriateEndPoint(points[points.Count - 1], mousePosition);
         }
 
         if (!points.Contains(mousePosition))
@@ -127,39 +133,37 @@ public class DrawLine : MonoBehaviour
     }
 
     private void FindAppropriateStartPoint(Vector2 start, Vector2 end)
-    {
+    {        
         // If start point inside an obstacle find appropriate
         // point to start line.
-
-        Collider2D[] cols = Physics2D.OverlapPointAll(start);
+        Collider2D[] cols = Physics2D.OverlapPointAll(start, layerMask);
         foreach (Collider2D col in cols)
         {
-            if (col.tag != "DrawLine")
+            RaycastHit2D[] hits = Physics2D.LinecastAll(end, start, layerMask);
+            float lineRadius = lineWidth / 2;
+
+            foreach (RaycastHit2D hit in hits)
             {
-                RaycastHit2D[] hits = Physics2D.LinecastAll(end, start);
-                float lineRadius = lineWidth / 2;
-
-                foreach (RaycastHit2D hit in hits)
+                // When we raycasting backward, we need to ensure that the object we hit should be
+                // same with the object that we collided at start point.
+                if (hit.collider == col)
                 {
-                    if (hit.collider.tag != "DrawLine" && hit.collider == col)
-                    {
-                        // Add new start point in here. I don't know how to do it else.
-                        Vector2 newStart = hit.point + hit.normal * lineRadius;
-                        points.Add(newStart);
-                        CreateCircle(newStart);
-                        resetLine = false;
-                        mousePosition = GetAppropriateEndPoint(points[points.Count - 1], mousePosition);
+                    // Add new start point in here. I don't know how to do it else.
+                    Vector2 newStart = hit.point + hit.normal * lineRadius;
+                    points.Add(newStart);
+                    CreateCircle(newStart);
+                    resetLine = false;
+                    mousePosition = GetAppropriateEndPoint(points[points.Count - 1], mousePosition);
 
-                        return;
-                    }
+                    return;
                 }
-            }
+            }  
         }
     }
 
     private Vector2 GetAppropriateEndPoint(Vector2 start, Vector2 end)
     {
-        RaycastHit2D[] hits = Physics2D.LinecastAll(start, end);
+        RaycastHit2D[] hits = Physics2D.LinecastAll(start, end, layerMask);
         float lineRadius = lineWidth / 2;
 
         foreach (RaycastHit2D hit in hits)
@@ -171,7 +175,7 @@ public class DrawLine : MonoBehaviour
             }
         }
 
-        Collider2D[] cols = Physics2D.OverlapCircleAll(end, lineRadius);
+        Collider2D[] cols = Physics2D.OverlapCircleAll(end, lineRadius, layerMask);
         Collider2D hitCollider = null;
         foreach (Collider2D col in cols)
         {
@@ -188,35 +192,35 @@ public class DrawLine : MonoBehaviour
             closest.distance = float.MaxValue;
 
             RaycastHit2D hit = new RaycastHit2D();
-            hits = Physics2D.RaycastAll(end, Vector2.up, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.up, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.right, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.right, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.down, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.down, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.left, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.left, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.up + Vector2.right, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.up + Vector2.right, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.down + Vector2.right, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.down + Vector2.right, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.up + Vector2.left, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.up + Vector2.left, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
-            hits = Physics2D.RaycastAll(end, Vector2.down + Vector2.left, lineRadius);
+            hits = Physics2D.RaycastAll(end, Vector2.down + Vector2.left, lineRadius, layerMask);
             if (IsThereAnyHit(hits, ref hit) == true && hit.distance < closest.distance)
                 closest = hit;
 
@@ -232,13 +236,12 @@ public class DrawLine : MonoBehaviour
 
     private bool IsThereAnyHit(RaycastHit2D[] hits, ref RaycastHit2D hitRef)
     {
-        foreach (RaycastHit2D hit in hits)
+        if(hits.Length > 0)
         {
-            if (hit.collider.tag != "DrawLine")
-            {
-                hitRef = hit;
-                return true;
-            }
+            // We just grab the first one.
+            // We hope that there is only one :D
+            hitRef = hits[0];
+            return true;
         }
 
         return false;

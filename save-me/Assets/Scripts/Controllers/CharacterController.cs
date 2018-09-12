@@ -26,17 +26,16 @@ public partial class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < -20f || transform.position.x > 180f)
-            gameController.Failed();
-
+        //if (transform.position.y < -20f || transform.position.x > 180f)
+        //    gameController.Failed();
     }
 
     private void FixedUpdate()
     {
-        if (rigidbody2D.velocity.x < maxSpeed)
-        {
-            rigidbody2D.AddForce(force, ForceMode2D.Force);
-        }
+        //if (rigidbody2D.velocity.x < maxSpeed)
+        //{
+        //    rigidbody2D.AddForce(force, ForceMode2D.Force);
+        //}
     }
 
     public void ResetCharacter()
